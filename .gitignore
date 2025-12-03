@@ -10,10 +10,10 @@ __pycache__/
 .DS_Store
 dist/
 build/
-AGENTS.ms
 scaffold.ashd.py
 docs/
 ai-dev-tasks-main/
 tasks/
 *.db
 *.db-journal
+AGENTS.md
