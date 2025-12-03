@@ -17,3 +17,4 @@ ai-dev-tasks-main/
 tasks/
 *.db
 *.db-journal
+AGENTS.md
