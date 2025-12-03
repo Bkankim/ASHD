@@ -15,3 +15,5 @@ scaffold.ashd.py
 docs/
 ai-dev-tasks-main/
 tasks/
+*.db
+*.db-journal
