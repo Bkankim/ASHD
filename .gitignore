@@ -1,0 +1,17 @@
+__pycache__/
+*.py[cod]
+.venv/
+.env
+.env.local
+.vscode/
+.idea/
+.mypy_cache/
+.pytest_cache/
+.DS_Store
+dist/
+build/
+AGENTS.ms
+scaffold.ashd.py
+docs/
+ai-dev-tasks-main/
+tasks/

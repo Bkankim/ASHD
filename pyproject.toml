@@ -1,0 +1,30 @@
+[project]
+name = "ashd"
+version = "0.1.0"
+description = "ASHD - AS/환불/보증 관리 서비스 (웹 + 이메일 + 텔레그램 알림)"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [
+  { name = "BK", email = "you@example.com" },
+]
+
+# uv 환경에서 사용할 의존성 목록입니다.
+# 버전은 uv가 자동으로 적절한 최신 버전을 선택하도록 구체적으로 고정하지 않습니다.
+dependencies = [
+  "fastapi",
+  "uvicorn[standard]",
+  "sqlmodel",
+  "langgraph",
+  "python-telegram-bot",
+  "aiosmtplib",
+  "jinja2",
+  "pydantic<2.0.0",
+  "email-validator",
+  "apscheduler",
+  "passlib[bcrypt]",
+  "python-jose[cryptography]",
+  "python-multipart==0.0.20"
+]
+
+[tool.uv]
+# uv 관련 추가 설정이 필요하다면 이 섹션에 추가합니다.
