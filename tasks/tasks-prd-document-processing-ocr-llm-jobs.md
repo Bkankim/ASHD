@@ -79,7 +79,9 @@
   - [x] 4.3 PDF 3p 초과 경고(job.error) 기록 및 마스킹 적용 (파일: `app/services/document_processing.py`; 검증: `tests/test_documents.py` 경고/마스킹 테스트 추가)
     - 근거: `app/services/document_processing.py`에서 경고를 `job.error`에 저장할 때 `redact_text` 적용
     - 근거: `tests/test_documents.py::test_document_pdf_page_limit_warning`에서 경고 문자열 확인
-  - [ ] 4.4 응답 전 마스킹 미들웨어 적용 범위 확인(`/documents`, `/jobs`) (파일: `app/api/middlewares/redaction.py`; 검증: 응답 텍스트 검사 테스트)
+  - [x] 4.4 응답 전 마스킹 미들웨어 적용 범위 확인(`/documents`, `/jobs`) (파일: `app/api/middlewares/redaction.py`; 검증: 응답 텍스트 검사 테스트)
+    - 근거: `app/api/middlewares/redaction.py`에서 JSON 응답 전역 마스킹 적용(/auth만 예외)
+    - 근거: `tests/test_documents.py::test_job_response_redaction`에서 Job 응답 마스킹 확인
 
 - [ ] 5.0 비기능 요구사항(무료 PaaS/운영 안정성)
   - [ ] 5.1 업로드는 202로 즉시 반환되고, OCR/추출은 비동기 처리됨을 문서화 (파일: PRD, `docs/PROJECT_OVERVIEW.md`; 검증: 문서 리뷰)
