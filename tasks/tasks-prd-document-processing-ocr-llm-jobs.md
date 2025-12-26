@@ -37,7 +37,9 @@
   - [x] 1.1 `/documents/upload` 응답 스키마(202 + job_id/document_id/status) 확인 (파일: `app/api/routes/documents.py`, `app/schemas/document.py`; 검증: `tests/test_documents.py` 또는 curl)
     - 근거: `app/api/routes/documents.py`의 `DocumentUploadResponse` 반환, `app/schemas/document.py` 스키마 정의
     - 근거: `tests/test_documents.py::test_document_upload_job_flow`에서 202 + job_id 사용 확인
-  - [ ] 1.2 업로드 파일 타입(이미지+PDF) 문서 정합성 반영 (파일: `docs/PROJECT_OVERVIEW.md`, `docs/API_EXAMPLES.md`; 검증: 문서 리뷰)
+  - [x] 1.2 업로드 파일 타입(이미지+PDF) 문서 정합성 반영 (파일: `docs/PROJECT_OVERVIEW.md`, `docs/API_EXAMPLES.md`; 검증: 문서 리뷰)
+    - 근거: `docs/PROJECT_OVERVIEW.md`에 이미지/PDF 업로드 명시
+    - 근거: `docs/API_EXAMPLES.md` 문서 업로드 섹션에 이미지/PDF 타입 추가
   - [x] 1.3 10MB 업로드 제한 적용 + 413 테스트 추가 (파일: `app/api/routes/documents.py`, `tests/test_documents.py`; 검증: pytest 413 케이스 통과)
   - [ ] 1.4 `/jobs/{id}` 응답 스키마/상태 전이 문서 정합성 점검 (파일: `app/schemas/job.py`, `docs/API_EXAMPLES.md`; 검증: `tests/test_documents.py`)
 
