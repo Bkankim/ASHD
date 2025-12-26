@@ -28,8 +28,7 @@
   - Document/Product/Job 업데이트 + 마스킹 적용
   - 테스트: `tests/test_documents.py`
 - Gaps/Questions:
-  - PDF 최대 3p 처리/경고 기록, 업로드 10MB 제한은 PRD 요구사항이지만 코드 반영 여부는 확인 필요.
-  - `PROJECT_OVERVIEW.md`의 LLM/RAG 문구 정합성 수정 필요.
+  - 현재 체크리스트 기준에서 추가 미결 항목 없음
 
 ## Tasks
 
