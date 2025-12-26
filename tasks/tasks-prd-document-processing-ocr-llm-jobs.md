@@ -107,5 +107,6 @@
   - [x] 6.4 `docs/DEV_GUIDE.md`/`docs/API_EXAMPLES.md` 정책 반영 (파일: 문서; 검증: 문서 리뷰)
     - 근거: `docs/DEV_GUIDE.md`에 10MB 제한/PDF 3p 정책 추가
     - 근거: `docs/API_EXAMPLES.md` 문서 업로드 섹션에 크기/페이지 제한 명시
+    - 근거: `.gitignore`에서 `tasks/`, `ai-dev-tasks-main/`, `AGENTS.md` 무시 규칙 제거
   - [x] 6.5 `UV_CACHE_DIR=/home/sweetbkan/ASHD/.uv_cache uv run pytest` 실행 기록 (검증: 테스트 로그 캡처)
     - 근거: `UV_CACHE_DIR=/home/sweetbkan/ASHD/.uv_cache uv run pytest` 실행(41 passed)
