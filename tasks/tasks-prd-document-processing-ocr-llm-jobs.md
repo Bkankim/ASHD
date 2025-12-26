@@ -60,7 +60,9 @@
     - 근거: `tests/test_documents.py::test_job_error_redacted_on_failure` 통과
 
 - [ ] 3.0 룰 기반 추출 + LLM 보완 조건 확정
-  - [ ] 3.1 필수 필드 정의(`REQUIRED_FIELDS`) 확인 및 PRD/문서 반영 (파일: `app/services/document_processing.py`, PRD; 검증: 코드 리뷰)
+  - [x] 3.1 필수 필드 정의(`REQUIRED_FIELDS`) 확인 및 PRD/문서 반영 (파일: `app/services/document_processing.py`, PRD; 검증: 코드 리뷰)
+    - 근거: `app/services/document_processing.py`의 `REQUIRED_FIELDS=["title","purchase_date","amount","store"]`
+    - 근거: PRD `Functional Requirements`의 필수 필드 항목 일치
   - [ ] 3.2 누락 시에만 LLM 보완 추출되는지 확인 (파일: `app/services/document_processing.py`; 검증: `tests/test_documents.py` 근거 정리)
   - [ ] 3.3 LLM 키 누락 시 Mock fallback 동작 문서화 (파일: `app/extractors/llm.py`, `docs/DEV_GUIDE.md`; 검증: 코드 리뷰)
 
