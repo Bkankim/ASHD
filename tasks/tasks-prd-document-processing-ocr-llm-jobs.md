@@ -55,7 +55,9 @@
   - [x] 2.3 PDF 3p 제한 처리 지점 결정(업로드 단계 vs OCR 단계) 및 정책 문서화 (파일: `app/api/routes/documents.py`, `app/services/document_processing.py`, PRD; 검증: 문서 리뷰)
     - 근거: `app/services/document_processing.py`에서 PDF 페이지 제한(1~3p) 적용 및 경고 처리
     - 근거: `tests/test_documents.py::test_document_pdf_page_limit_warning`로 3p 제한 경고 확인
-  - [ ] 2.4 OCR 실패 시 Job status/error 처리 규칙 확인 및 테스트 근거 정리 (파일: `app/services/document_processing.py`, `tests/test_documents.py`; 검증: 실패 케이스 테스트)
+  - [x] 2.4 OCR 실패 시 Job status/error 처리 규칙 확인 및 테스트 근거 정리 (파일: `app/services/document_processing.py`, `tests/test_documents.py`; 검증: 실패 케이스 테스트)
+    - 근거: `app/services/document_processing.py` 예외 처리에서 status=failed, error 마스킹 저장
+    - 근거: `tests/test_documents.py::test_job_error_redacted_on_failure` 통과
 
 - [ ] 3.0 룰 기반 추출 + LLM 보완 조건 확정
   - [ ] 3.1 필수 필드 정의(`REQUIRED_FIELDS`) 확인 및 PRD/문서 반영 (파일: `app/services/document_processing.py`, PRD; 검증: 코드 리뷰)
