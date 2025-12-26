@@ -3,7 +3,7 @@
 from datetime import timedelta
 
 from fastapi import APIRouter, Depends, HTTPException, status
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from fastapi.security import OAuth2PasswordBearer
 from sqlmodel import Session, select
 
 from app.api.dependencies.auth import get_current_user
@@ -83,15 +83,14 @@ def register(user_in: UserCreate, session: Session = Depends(get_session)) -> Us
 
 @router.post("/login", response_model=TokenResponse)
 def login(
-    form_data: OAuth2PasswordRequestForm = Depends(),
+    login_req: LoginRequest,
     session: Session = Depends(get_session),
 ) -> TokenResponse:
-    """로그인 엔드포인트 (OAuth2 password flow 호환)."""
+    """로그인 엔드포인트 (JSON 바디)."""
 
-    # OAuth2PasswordRequestForm에서는 필드 이름이 username/password야.
-    # 우리는 username 자리에 email을 넣어서 사용하면 된다.
-    user = _get_user_by_email(session, form_data.username)
-    if not user or not verify_password(form_data.password, user.password_hash):
+    # JSON 바디로 받은 이메일/비밀번호를 검증합니다.
+    user = _get_user_by_email(session, login_req.email)
+    if not user or not verify_password(login_req.password, user.password_hash):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid credentials",
