@@ -33,7 +33,8 @@
 
 ## Tasks
 
-- [ ] 1.0 업로드/Job API 요구사항 정합성 점검
+- [x] 1.0 업로드/Job API 요구사항 정합성 점검
+  - 근거: 1.1~1.4 서브태스크 완료
   - [x] 1.1 `/documents/upload` 응답 스키마(202 + job_id/document_id/status) 확인 (파일: `app/api/routes/documents.py`, `app/schemas/document.py`; 검증: `tests/test_documents.py` 또는 curl)
     - 근거: `app/api/routes/documents.py`의 `DocumentUploadResponse` 반환, `app/schemas/document.py` 스키마 정의
     - 근거: `tests/test_documents.py::test_document_upload_job_flow`에서 202 + job_id 사용 확인
@@ -45,7 +46,8 @@
     - 근거: `app/schemas/job.py`의 `DocumentJobRead` 필드와 `docs/API_EXAMPLES.md` 응답 예시 일치
     - 근거: `tests/test_documents.py::test_document_upload_job_flow`에서 status/completed 확인
 
-- [ ] 2.0 OCR 연동 + Mock fallback 정책 정리
+- [x] 2.0 OCR 연동 + Mock fallback 정책 정리
+  - 근거: 2.1~2.4 서브태스크 완료
   - [x] 2.1 외부 OCR 요청/응답 파서 정책 확인 및 문서화 (파일: `app/ocr/external.py`, `docs/DEV_GUIDE.md`; 검증: 코드 리뷰)
     - 근거: `app/ocr/external.py`에서 `fullTextAnnotation.text` → `textAnnotations[0]` 순으로 파싱
     - 근거: `docs/DEV_GUIDE.md`에 OCR 응답 파싱 정책 요약 추가
@@ -59,7 +61,8 @@
     - 근거: `app/services/document_processing.py` 예외 처리에서 status=failed, error 마스킹 저장
     - 근거: `tests/test_documents.py::test_job_error_redacted_on_failure` 통과
 
-- [ ] 3.0 룰 기반 추출 + LLM 보완 조건 확정
+- [x] 3.0 룰 기반 추출 + LLM 보완 조건 확정
+  - 근거: 3.1~3.3 서브태스크 완료
   - [x] 3.1 필수 필드 정의(`REQUIRED_FIELDS`) 확인 및 PRD/문서 반영 (파일: `app/services/document_processing.py`, PRD; 검증: 코드 리뷰)
     - 근거: `app/services/document_processing.py`의 `REQUIRED_FIELDS=["title","purchase_date","amount","store"]`
     - 근거: PRD `Functional Requirements`의 필수 필드 항목 일치
@@ -69,7 +72,8 @@
     - 근거: `app/extractors/llm.py`의 `build_llm_extractor`가 키 없으면 `MockLLMFieldExtractor` 반환
     - 근거: `docs/DEV_GUIDE.md` LLM 환경 변수 예시에 "키가 없으면 Mock" 명시
 
-- [ ] 4.0 Document/Product/Job 저장 규칙 및 마스킹 보장
+- [x] 4.0 Document/Product/Job 저장 규칙 및 마스킹 보장
+  - 근거: 4.1~4.4 서브태스크 완료
   - [x] 4.1 Document raw_text/parsed_fields/evidence 저장 전 마스킹 확인 (파일: `app/services/document_processing.py`; 검증: `tests/test_documents.py`)
     - 근거: `app/services/document_processing.py`에서 `redact_text`/`redact_in_structure` 적용
     - 근거: `tests/test_documents.py::test_document_upload_job_flow`에서 원문 노출 없음 확인
@@ -83,7 +87,8 @@
     - 근거: `app/api/middlewares/redaction.py`에서 JSON 응답 전역 마스킹 적용(/auth만 예외)
     - 근거: `tests/test_documents.py::test_job_response_redaction`에서 Job 응답 마스킹 확인
 
-- [ ] 5.0 비기능 요구사항(무료 PaaS/운영 안정성)
+- [x] 5.0 비기능 요구사항(무료 PaaS/운영 안정성)
+  - 근거: 5.1~5.3 서브태스크 완료
   - [x] 5.1 업로드는 202로 즉시 반환되고, OCR/추출은 비동기 처리됨을 문서화 (파일: PRD, `docs/PROJECT_OVERVIEW.md`; 검증: 문서 리뷰)
     - 근거: PRD `Functional Requirements`에 202 + job_id + 비동기 처리 명시
     - 근거: `docs/PROJECT_OVERVIEW.md` v0.1 포함 기능에 202 + job_id 비동기 처리 명시
@@ -93,7 +98,8 @@
   - [x] 5.3 재시도 없음 정책 확인 및 Backlog 제안 정리 (파일: PRD; 검증: 문서 리뷰)
     - 근거: PRD `Non-Goals`/`Backlog`에 재시도 엔드포인트 v0.2 제안만 남김
 
-- [ ] 6.0 테스트/문서 정합성 점검
+- [x] 6.0 테스트/문서 정합성 점검
+  - 근거: 6.2~6.5 서브태스크 완료
   - [x] 6.2 PDF 3p 제한/경고 처리 테스트 추가 (파일: `tests/test_documents.py`; 검증: 초과 페이지 경고/마스킹 확인)
     - 근거: `tests/test_documents.py::test_document_pdf_page_limit_warning` 추가 및 통과
   - [x] 6.3 `PROJECT_OVERVIEW.md`의 LLM 문구를 “RAG 제외 + 보완 추출 포함”으로 정합 (파일: `docs/PROJECT_OVERVIEW.md`; 검증: 문서 리뷰)
