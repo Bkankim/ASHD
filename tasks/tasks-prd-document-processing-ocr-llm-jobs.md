@@ -84,7 +84,9 @@
     - 근거: `tests/test_documents.py::test_job_response_redaction`에서 Job 응답 마스킹 확인
 
 - [ ] 5.0 비기능 요구사항(무료 PaaS/운영 안정성)
-  - [ ] 5.1 업로드는 202로 즉시 반환되고, OCR/추출은 비동기 처리됨을 문서화 (파일: PRD, `docs/PROJECT_OVERVIEW.md`; 검증: 문서 리뷰)
+  - [x] 5.1 업로드는 202로 즉시 반환되고, OCR/추출은 비동기 처리됨을 문서화 (파일: PRD, `docs/PROJECT_OVERVIEW.md`; 검증: 문서 리뷰)
+    - 근거: PRD `Functional Requirements`에 202 + job_id + 비동기 처리 명시
+    - 근거: `docs/PROJECT_OVERVIEW.md` v0.1 포함 기능에 202 + job_id 비동기 처리 명시
   - [ ] 5.2 로컬 저장(외부 스토리지 v0.2) 정책과 리스크 문서화 (파일: PRD, `docs/SYSTEM_ARCHITECTURE.md`; 검증: 문서 리뷰)
   - [ ] 5.3 재시도 없음 정책 확인 및 Backlog 제안 정리 (파일: PRD; 검증: 문서 리뷰)
 
