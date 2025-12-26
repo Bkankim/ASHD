@@ -46,7 +46,9 @@
     - 근거: `tests/test_documents.py::test_document_upload_job_flow`에서 status/completed 확인
 
 - [ ] 2.0 OCR 연동 + Mock fallback 정책 정리
-  - [ ] 2.1 외부 OCR 요청/응답 파서 정책 확인 및 문서화 (파일: `app/ocr/external.py`, `docs/DEV_GUIDE.md`; 검증: 코드 리뷰)
+  - [x] 2.1 외부 OCR 요청/응답 파서 정책 확인 및 문서화 (파일: `app/ocr/external.py`, `docs/DEV_GUIDE.md`; 검증: 코드 리뷰)
+    - 근거: `app/ocr/external.py`에서 `fullTextAnnotation.text` → `textAnnotations[0]` 순으로 파싱
+    - 근거: `docs/DEV_GUIDE.md`에 OCR 응답 파싱 정책 요약 추가
   - [ ] 2.2 OCR 키 누락 시 Mock fallback 동작 근거 정리 (파일: `app/ocr/external.py`, `tests/test_documents.py`; 검증: 테스트 로그/코드 확인)
   - [ ] 2.3 PDF 3p 제한 처리 지점 결정(업로드 단계 vs OCR 단계) 및 정책 문서화 (파일: `app/api/routes/documents.py`, `app/services/document_processing.py`, PRD; 검증: 문서 리뷰)
   - [ ] 2.4 OCR 실패 시 Job status/error 처리 규칙 확인 및 테스트 근거 정리 (파일: `app/services/document_processing.py`, `tests/test_documents.py`; 검증: 실패 케이스 테스트)
