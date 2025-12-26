@@ -98,5 +98,7 @@
     - 근거: `tests/test_documents.py::test_document_pdf_page_limit_warning` 추가 및 통과
   - [x] 6.3 `PROJECT_OVERVIEW.md`의 LLM 문구를 “RAG 제외 + 보완 추출 포함”으로 정합 (파일: `docs/PROJECT_OVERVIEW.md`; 검증: 문서 리뷰)
     - 근거: `docs/PROJECT_OVERVIEW.md` v0.1 제외 기능에 “필드 추출 보완 LLM 포함, RAG 제외” 명시
-  - [ ] 6.4 `docs/DEV_GUIDE.md`/`docs/API_EXAMPLES.md` 정책 반영 (파일: 문서; 검증: 문서 리뷰)
+  - [x] 6.4 `docs/DEV_GUIDE.md`/`docs/API_EXAMPLES.md` 정책 반영 (파일: 문서; 검증: 문서 리뷰)
+    - 근거: `docs/DEV_GUIDE.md`에 10MB 제한/PDF 3p 정책 추가
+    - 근거: `docs/API_EXAMPLES.md` 문서 업로드 섹션에 크기/페이지 제한 명시
   - [ ] 6.5 `UV_CACHE_DIR=/home/sweetbkan/ASHD/.uv_cache uv run pytest` 실행 기록 (검증: 테스트 로그 캡처)

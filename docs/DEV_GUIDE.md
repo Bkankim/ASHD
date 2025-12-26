@@ -136,6 +136,12 @@ OCR 응답 파싱 정책(요약):
 - Google Vision `images:annotate` 응답의 `fullTextAnnotation.text`를 우선 사용합니다.
 - `fullTextAnnotation`이 비어 있으면 `textAnnotations[0].description`을 fallback으로 사용합니다.
 
+문서 업로드 정책(요약):
+
+- 업로드 파일은 이미지 또는 PDF만 지원합니다.
+- 파일 크기 제한: **10MB 초과는 413(Payload Too Large)**로 거부합니다.
+- PDF는 **최대 3페이지까지만 OCR 처리**하며, 3p 초과는 무시되고 `job.error`에 경고가 기록됩니다.
+
 ### 4.2 설정 로딩
 
 * `app/core/config.py` 에서 Pydantic Settings 등을 통해 위 환경 변수를 로딩합니다.

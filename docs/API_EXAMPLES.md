@@ -63,6 +63,8 @@ Content-Type: multipart/form-data
 file=<image or pdf file>
 ```
 > 파일 타입: 이미지(`image/*`) 또는 PDF(`application/pdf`)
+> 파일 크기: 10MB 초과는 413으로 거부
+> PDF 처리: 최대 3페이지까지만 OCR 처리 (3p 초과는 무시 + job.error 경고)
 응답 예:
 ```json
 {
