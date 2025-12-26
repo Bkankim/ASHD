@@ -87,7 +87,9 @@
   - [x] 5.1 업로드는 202로 즉시 반환되고, OCR/추출은 비동기 처리됨을 문서화 (파일: PRD, `docs/PROJECT_OVERVIEW.md`; 검증: 문서 리뷰)
     - 근거: PRD `Functional Requirements`에 202 + job_id + 비동기 처리 명시
     - 근거: `docs/PROJECT_OVERVIEW.md` v0.1 포함 기능에 202 + job_id 비동기 처리 명시
-  - [ ] 5.2 로컬 저장(외부 스토리지 v0.2) 정책과 리스크 문서화 (파일: PRD, `docs/SYSTEM_ARCHITECTURE.md`; 검증: 문서 리뷰)
+  - [x] 5.2 로컬 저장(외부 스토리지 v0.2) 정책과 리스크 문서화 (파일: PRD, `docs/SYSTEM_ARCHITECTURE.md`; 검증: 문서 리뷰)
+    - 근거: PRD `Design Considerations`에 로컬 저장 → v0.2 외부 스토리지 전환 명시
+    - 근거: `docs/SYSTEM_ARCHITECTURE.md` 업로드 플로우에 로컬 디스크 리스크 주석 추가
   - [ ] 5.3 재시도 없음 정책 확인 및 Backlog 제안 정리 (파일: PRD; 검증: 문서 리뷰)
 
 - [ ] 6.0 테스트/문서 정합성 점검
