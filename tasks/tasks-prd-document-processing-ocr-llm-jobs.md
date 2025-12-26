@@ -52,7 +52,9 @@
   - [x] 2.2 OCR 키 누락 시 Mock fallback 동작 근거 정리 (파일: `app/ocr/external.py`, `tests/test_documents.py`; 검증: 테스트 로그/코드 확인)
     - 근거: `app/ocr/external.py`의 `build_ocr_client`가 키 없으면 `MockOCRClient` 반환
     - 근거: `docs/DEV_GUIDE.md` 환경 변수 섹션에 "키가 없으면 Mock OCR" 명시
-  - [ ] 2.3 PDF 3p 제한 처리 지점 결정(업로드 단계 vs OCR 단계) 및 정책 문서화 (파일: `app/api/routes/documents.py`, `app/services/document_processing.py`, PRD; 검증: 문서 리뷰)
+  - [x] 2.3 PDF 3p 제한 처리 지점 결정(업로드 단계 vs OCR 단계) 및 정책 문서화 (파일: `app/api/routes/documents.py`, `app/services/document_processing.py`, PRD; 검증: 문서 리뷰)
+    - 근거: `app/services/document_processing.py`에서 PDF 페이지 제한(1~3p) 적용 및 경고 처리
+    - 근거: `tests/test_documents.py::test_document_pdf_page_limit_warning`로 3p 제한 경고 확인
   - [ ] 2.4 OCR 실패 시 Job status/error 처리 규칙 확인 및 테스트 근거 정리 (파일: `app/services/document_processing.py`, `tests/test_documents.py`; 검증: 실패 케이스 테스트)
 
 - [ ] 3.0 룰 기반 추출 + LLM 보완 조건 확정
@@ -63,7 +65,9 @@
 - [ ] 4.0 Document/Product/Job 저장 규칙 및 마스킹 보장
   - [ ] 4.1 Document raw_text/parsed_fields/evidence 저장 전 마스킹 확인 (파일: `app/services/document_processing.py`; 검증: `tests/test_documents.py`)
   - [ ] 4.2 Product는 항상 새 레코드 생성 정책 유지 (파일: `app/services/document_processing.py`, PRD; 검증: 코드 리뷰)
-  - [ ] 4.3 PDF 3p 초과 경고(job.error) 기록 및 마스킹 적용 (파일: `app/services/document_processing.py`; 검증: `tests/test_documents.py` 경고/마스킹 테스트 추가)
+  - [x] 4.3 PDF 3p 초과 경고(job.error) 기록 및 마스킹 적용 (파일: `app/services/document_processing.py`; 검증: `tests/test_documents.py` 경고/마스킹 테스트 추가)
+    - 근거: `app/services/document_processing.py`에서 경고를 `job.error`에 저장할 때 `redact_text` 적용
+    - 근거: `tests/test_documents.py::test_document_pdf_page_limit_warning`에서 경고 문자열 확인
   - [ ] 4.4 응답 전 마스킹 미들웨어 적용 범위 확인(`/documents`, `/jobs`) (파일: `app/api/middlewares/redaction.py`; 검증: 응답 텍스트 검사 테스트)
 
 - [ ] 5.0 비기능 요구사항(무료 PaaS/운영 안정성)
@@ -72,7 +76,8 @@
   - [ ] 5.3 재시도 없음 정책 확인 및 Backlog 제안 정리 (파일: PRD; 검증: 문서 리뷰)
 
 - [ ] 6.0 테스트/문서 정합성 점검
-  - [ ] 6.2 PDF 3p 제한/경고 처리 테스트 추가 (파일: `tests/test_documents.py`; 검증: 초과 페이지 경고/마스킹 확인)
+  - [x] 6.2 PDF 3p 제한/경고 처리 테스트 추가 (파일: `tests/test_documents.py`; 검증: 초과 페이지 경고/마스킹 확인)
+    - 근거: `tests/test_documents.py::test_document_pdf_page_limit_warning` 추가 및 통과
   - [ ] 6.3 `PROJECT_OVERVIEW.md`의 LLM 문구를 “RAG 제외 + 보완 추출 포함”으로 정합 (파일: `docs/PROJECT_OVERVIEW.md`; 검증: 문서 리뷰)
   - [ ] 6.4 `docs/DEV_GUIDE.md`/`docs/API_EXAMPLES.md` 정책 반영 (파일: 문서; 검증: 문서 리뷰)
   - [ ] 6.5 `UV_CACHE_DIR=/home/sweetbkan/ASHD/.uv_cache uv run pytest` 실행 기록 (검증: 테스트 로그 캡처)
