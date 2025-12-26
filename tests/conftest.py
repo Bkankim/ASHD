@@ -13,11 +13,21 @@ import pytest
 from fastapi.testclient import TestClient
 from sqlmodel import Session, SQLModel, create_engine
 
+import sys
+from pathlib import Path
+
+# __file__ 기준으로 프로젝트 루트(/home/sweetbkan/ASHD)를 찾아서 sys.path에 추가합니다.
+ROOT_DIR = Path(__file__).resolve().parents[1]
+if str(ROOT_DIR) not in sys.path:
+    # sys.path 맨 앞에 넣어 우선순위를 높입니다.
+    sys.path.insert(0, str(ROOT_DIR))
+
 import app.core.db as db
 import app.main as main
 from app.main import create_app
 
 
+# 테스트 전용 SQLite 엔진을 제공하는 픽스처입니다.
 @pytest.fixture
 def test_engine(tmp_path) -> Iterator:
     """테스트 전용 SQLite 엔진을 생성합니다.
@@ -32,6 +42,7 @@ def test_engine(tmp_path) -> Iterator:
     yield engine
 
 
+# 테스트용 FastAPI 앱을 제공하는 픽스처입니다.
 @pytest.fixture
 def app(test_engine):
     """테스트용 FastAPI 앱을 생성합니다.
@@ -52,6 +63,7 @@ def app(test_engine):
     return application
 
 
+# TestClient를 제공하는 픽스처입니다.
 @pytest.fixture
 def client(app):
     """FastAPI TestClient 픽스처입니다."""
@@ -59,6 +71,16 @@ def client(app):
     return TestClient(app)
 
 
+# 테스트 전용 DB 세션을 제공하는 픽스처입니다.
+@pytest.fixture
+def db_session(test_engine):
+    """테스트용 DB 세션을 제공합니다."""
+
+    with Session(test_engine) as session:
+        yield session
+
+
+# 테스트용 사용자와 토큰을 만드는 헬퍼 픽스처입니다.
 @pytest.fixture
 def make_user_and_token(client):
     """테스트 사용자 생성 + 액세스 토큰 발급 헬퍼.
