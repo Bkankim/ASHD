@@ -90,7 +90,8 @@
   - [x] 5.2 로컬 저장(외부 스토리지 v0.2) 정책과 리스크 문서화 (파일: PRD, `docs/SYSTEM_ARCHITECTURE.md`; 검증: 문서 리뷰)
     - 근거: PRD `Design Considerations`에 로컬 저장 → v0.2 외부 스토리지 전환 명시
     - 근거: `docs/SYSTEM_ARCHITECTURE.md` 업로드 플로우에 로컬 디스크 리스크 주석 추가
-  - [ ] 5.3 재시도 없음 정책 확인 및 Backlog 제안 정리 (파일: PRD; 검증: 문서 리뷰)
+  - [x] 5.3 재시도 없음 정책 확인 및 Backlog 제안 정리 (파일: PRD; 검증: 문서 리뷰)
+    - 근거: PRD `Non-Goals`/`Backlog`에 재시도 엔드포인트 v0.2 제안만 남김
 
 - [ ] 6.0 테스트/문서 정합성 점검
   - [x] 6.2 PDF 3p 제한/경고 처리 테스트 추가 (파일: `tests/test_documents.py`; 검증: 초과 페이지 경고/마스킹 확인)
