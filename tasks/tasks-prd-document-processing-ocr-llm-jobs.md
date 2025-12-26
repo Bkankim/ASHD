@@ -65,7 +65,9 @@
     - 근거: PRD `Functional Requirements`의 필수 필드 항목 일치
   - [x] 3.2 누락 시에만 LLM 보완 추출되는지 확인 (파일: `app/services/document_processing.py`; 검증: `tests/test_documents.py` 근거 정리)
     - 근거: `app/services/document_processing.py`에서 `needs_llm(rule_fields)` 조건으로만 LLM 호출
-  - [ ] 3.3 LLM 키 누락 시 Mock fallback 동작 문서화 (파일: `app/extractors/llm.py`, `docs/DEV_GUIDE.md`; 검증: 코드 리뷰)
+  - [x] 3.3 LLM 키 누락 시 Mock fallback 동작 문서화 (파일: `app/extractors/llm.py`, `docs/DEV_GUIDE.md`; 검증: 코드 리뷰)
+    - 근거: `app/extractors/llm.py`의 `build_llm_extractor`가 키 없으면 `MockLLMFieldExtractor` 반환
+    - 근거: `docs/DEV_GUIDE.md` LLM 환경 변수 예시에 "키가 없으면 Mock" 명시
 
 - [ ] 4.0 Document/Product/Job 저장 규칙 및 마스킹 보장
   - [ ] 4.1 Document raw_text/parsed_fields/evidence 저장 전 마스킹 확인 (파일: `app/services/document_processing.py`; 검증: `tests/test_documents.py`)
