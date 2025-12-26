@@ -70,7 +70,9 @@
     - 근거: `docs/DEV_GUIDE.md` LLM 환경 변수 예시에 "키가 없으면 Mock" 명시
 
 - [ ] 4.0 Document/Product/Job 저장 규칙 및 마스킹 보장
-  - [ ] 4.1 Document raw_text/parsed_fields/evidence 저장 전 마스킹 확인 (파일: `app/services/document_processing.py`; 검증: `tests/test_documents.py`)
+  - [x] 4.1 Document raw_text/parsed_fields/evidence 저장 전 마스킹 확인 (파일: `app/services/document_processing.py`; 검증: `tests/test_documents.py`)
+    - 근거: `app/services/document_processing.py`에서 `redact_text`/`redact_in_structure` 적용
+    - 근거: `tests/test_documents.py::test_document_upload_job_flow`에서 원문 노출 없음 확인
   - [ ] 4.2 Product는 항상 새 레코드 생성 정책 유지 (파일: `app/services/document_processing.py`, PRD; 검증: 코드 리뷰)
   - [x] 4.3 PDF 3p 초과 경고(job.error) 기록 및 마스킹 적용 (파일: `app/services/document_processing.py`; 검증: `tests/test_documents.py` 경고/마스킹 테스트 추가)
     - 근거: `app/services/document_processing.py`에서 경고를 `job.error`에 저장할 때 `redact_text` 적용
