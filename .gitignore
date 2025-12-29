@@ -1,6 +1,8 @@
 __pycache__/
 *.py[cod]
 .venv/
+.uv-cache/
+.uv_cache/
 .env
 .env.local
 .vscode/
@@ -10,10 +12,6 @@ __pycache__/
 .DS_Store
 dist/
 build/
-scaffold.ashd.py
-docs/
-ai-dev-tasks-main/
-tasks/
 *.db
 *.db-journal
-AGENTS.md
+uploads/

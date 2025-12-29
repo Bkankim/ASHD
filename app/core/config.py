@@ -30,8 +30,22 @@ class AppSettings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
     JWT_ALGORITHM: str = "HS256"
 
+    # LLM 설정 (필드 보완 추출용)
+    LLM_BASE_URL: Optional[str] = None
+    LLM_API_KEY: Optional[str] = None
+    LLM_MODEL: str = "gpt-4o-mini"
+
+    # OCR 외부 API 설정 (v0.1: 외부 OCR 기본)
+    OCR_API_URL: Optional[str] = None
+    OCR_API_KEY: Optional[str] = None
+    OCR_TIMEOUT_SECONDS: int = 15
+    DOCUMENT_UPLOAD_DIR: str = "uploads"
+
     # 보안/서명 키 (반드시 .env에서 설정)
     SECRET_KEY: str
+
+    # 민감정보 마스킹 강화 여부 (true면 라벨 없는 카드번호 후보도 추가 탐지)
+    REDACTION_STRICT: bool = False
 
     # 이메일(SMTP) 설정
     SMTP_HOST: Optional[str] = None

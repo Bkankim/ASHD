@@ -12,15 +12,18 @@ from sqlmodel import Session, SQLModel
 # from app.api.routes import auth, health, notification_settings, products, telegram_account
 from app.api.routes import (
     auth,
+    documents,
     health,
+    jobs,
     notification_settings,
     products,
     telegram_account as telegram_account_routes,  # 라우터에 별칭
 )
+from app.api.middlewares.redaction import RedactionMiddleware
 from app.core.config import get_settings
 from app.core.db import engine, get_session
 from app.core.health import check_db_health
-from app.models import notification, product, telegram_account, user  # noqa: F401
+from app.models import document, job, notification, product, telegram_account, user  # noqa: F401
 
 
 def create_app() -> FastAPI:
@@ -35,6 +38,9 @@ def create_app() -> FastAPI:
         description="AS/환불/보증 관리 서비스 ASHD의 백엔드 API",
         version="0.1.0",
     )
+
+    # 응답에 민감정보가 포함되지 않도록 전역 마스킹 미들웨어를 등록합니다.
+    app.add_middleware(RedactionMiddleware)
 
     # 설정을 한 번만 로드해 애플리케이션 상태에 저장합니다.
     app.state.settings = get_settings()
@@ -54,6 +60,8 @@ def create_app() -> FastAPI:
 
     # 헬스 체크 및 도메인 관련 라우터 등록
     app.include_router(health.router)
+    app.include_router(documents.router)
+    app.include_router(jobs.router)
     app.include_router(products.router)
     app.include_router(notification_settings.router)
     # app.include_router(telegram_account.router)
