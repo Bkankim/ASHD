@@ -176,6 +176,17 @@ uv run uvicorn app.main:app --reload
 정상적으로 `{ "status": "ok" }` 등의 응답이 나오고,
 Swagger UI에서 엔드포인트 목록이 표시되면 개발 서버가 올바르게 동작하는 것입니다.
 
+### 5.3 운영 실행(무료 PaaS 기준)
+
+무료 PaaS 환경에서는 포트가 고정되지 않을 수 있으므로, `PORT` 환경 변수를 사용하는 방식을 권장합니다.
+
+```bash
+uv run uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}
+```
+
+* 운영 환경에서는 `--reload`를 사용하지 않습니다.
+* PaaS가 제공하는 `PORT` 환경 변수가 있으면 해당 포트로 바인딩합니다.
+
 ---
 
 ## 6. DB 초기화 및 마이그레이션 (초기 버전 가이드)

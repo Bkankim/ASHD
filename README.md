@@ -11,3 +11,19 @@ AS / 환불 / 보증 관리가 잘 안 되는 사람들을 위한
 - 이메일 및 텔레그램 알림으로 AS/환불/보증 기간 리마인드
 
 상세 설계 문서는 docs/ 디렉터리 내 .md 파일들을 참고하세요.
+
+## Quickstart
+
+```bash
+uv sync
+uv run uvicorn app.main:app --reload
+```
+
+## 운영 실행(무료 PaaS 기준)
+
+```bash
+uv run uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}
+```
+
+* 운영 환경에서는 `--reload`를 사용하지 않습니다.
+* PaaS가 제공하는 `PORT` 환경 변수를 우선 사용합니다.
