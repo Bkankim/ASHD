@@ -31,7 +31,8 @@
   - [x] 1.1 프로덕션 실행 커맨드/PORT 처리 문서화 (파일: `README.md`, `docs/DEV_GUIDE.md`; 검증: 문서 리뷰/rg)
     - 근거: `README.md`에 운영 실행 커맨드/PORT 설명 추가
     - 근거: `docs/DEV_GUIDE.md`에 5.3 운영 실행 섹션 추가
-  - [ ] 1.2 무료 PaaS 기준 ASGI 실행 방식 확정(uvicorn 단독) 및 문서 반영 (파일: `docs/DEV_GUIDE.md`; 검증: 문서 리뷰)
+  - [x] 1.2 무료 PaaS 기준 ASGI 실행 방식 확정(uvicorn 단독) 및 문서 반영 (파일: `docs/DEV_GUIDE.md`; 검증: 문서 리뷰)
+    - 근거: `docs/DEV_GUIDE.md`에 uvicorn 단독 ASGI 표준/비사용(gunicorn) 명시 및 실행 커맨드 정합
 
 - [ ] 2.0 Cron 트리거 엔드포인트 구현(보안 포함)
   - [ ] 2.1 `/internal/cron/daily-alerts` 라우트 추가 및 라우터 등록 (파일: `app/api/routes/cron.py`, `app/main.py`; 검증: pytest/간단 curl)
