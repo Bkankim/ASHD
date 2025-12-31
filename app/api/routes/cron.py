@@ -5,14 +5,16 @@
 - 아직 시크릿 검증(2.2)과 실행 로직(2.3)을 붙이지 않았으므로 501을 반환합니다.
 """
 
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status
+
+from app.api.dependencies.cron import verify_cron_secret
 
 router = APIRouter(prefix="/internal/cron", tags=["cron"])
 
 
 @router.post("/daily-alerts")
-def trigger_daily_alerts() -> dict[str, str]:
-    # 일일 알림 트리거 엔드포인트(스켈레톤)입니다.
+# 일일 알림 트리거 엔드포인트(스켈레톤)입니다.
+def trigger_daily_alerts(_: None = Depends(verify_cron_secret)) -> dict[str, str]:
     """일일 알림 트리거 엔드포인트(스켈레톤)입니다.
 
     현재 단계에서는 보안(시크릿 검증)과 실행 로직이 연결되지 않았으므로 501을 반환합니다.

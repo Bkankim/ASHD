@@ -43,6 +43,8 @@ class AppSettings(BaseSettings):
 
     # 보안/서명 키 (반드시 .env에서 설정)
     SECRET_KEY: str
+    # 외부 cron 호출 보호용 시크릿 (없으면 cron 호출 거부)
+    CRON_SECRET: Optional[str] = None
 
     # 민감정보 마스킹 강화 여부 (true면 라벨 없는 카드번호 후보도 추가 탐지)
     REDACTION_STRICT: bool = False
