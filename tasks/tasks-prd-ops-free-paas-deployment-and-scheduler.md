@@ -39,7 +39,8 @@
     - 근거: `app/api/routes/cron.py` 추가, `app/main.py`에 라우터 등록 + curl 501 확인 + pytest 통과
   - [x] 2.2 `CRON_SECRET` 검증 의존성 추가 및 설정/예시 반영 (파일: `app/core/config.py`, `.env.example`, `app/api/dependencies/cron.py`; 검증: pytest 403/501)
     - 근거: `tests/test_cron.py`에서 403/501 검증 + `UV_CACHE_DIR=/home/sweetbkan/ASHD/.uv_cache uv run pytest` 통과
-  - [ ] 2.3 `generate_daily_alerts()` 호출 + 요약 응답 반환 (파일: `app/api/routes/cron.py`; 검증: pytest)
+  - [x] 2.3 `generate_daily_alerts()` 호출 + 요약 응답 반환 (파일: `app/api/routes/cron.py`; 검증: pytest)
+    - 근거: `tests/test_cron.py`에서 200 응답/processed 확인 + `UV_CACHE_DIR=/home/sweetbkan/ASHD/.uv_cache uv run pytest` 통과
   - [ ] 2.4 문서에 cron 호출 예시 추가 (파일: `docs/DEV_GUIDE.md`, `docs/API_EXAMPLES.md`; 검증: 문서 리뷰)
 
 - [ ] 3.0 무료 PaaS 제약 대응(파일 소실/슬립)
