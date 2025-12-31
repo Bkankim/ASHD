@@ -35,7 +35,8 @@
     - 근거: `docs/DEV_GUIDE.md`에 uvicorn 단독 ASGI 표준/비사용(gunicorn) 명시 및 실행 커맨드 정합
 
 - [ ] 2.0 Cron 트리거 엔드포인트 구현(보안 포함)
-  - [ ] 2.1 `/internal/cron/daily-alerts` 라우트 추가 및 라우터 등록 (파일: `app/api/routes/cron.py`, `app/main.py`; 검증: pytest/간단 curl)
+  - [x] 2.1 `/internal/cron/daily-alerts` 라우트 추가 및 라우터 등록 (파일: `app/api/routes/cron.py`, `app/main.py`; 검증: pytest/간단 curl)
+    - 근거: `app/api/routes/cron.py` 추가, `app/main.py`에 라우터 등록 + curl 501 확인 + pytest 통과
   - [ ] 2.2 `CRON_SECRET` 검증 의존성 추가 및 설정/예시 반영 (파일: `app/core/config.py`, `.env.example`, `app/api/dependencies/cron.py`; 검증: pytest 403/200)
   - [ ] 2.3 `generate_daily_alerts()` 호출 + 요약 응답 반환 (파일: `app/api/routes/cron.py`; 검증: pytest)
   - [ ] 2.4 문서에 cron 호출 예시 추가 (파일: `docs/DEV_GUIDE.md`, `docs/API_EXAMPLES.md`; 검증: 문서 리뷰)
