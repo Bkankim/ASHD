@@ -120,6 +120,28 @@ Content-Type: application/json
 }
 ```
 
+## Cron (운영 트리거)
+### 일일 알림 트리거
+```http
+POST /internal/cron/daily-alerts
+X-CRON-SECRET: <cron-secret>
+```
+응답 예(성공):
+```json
+{
+  "status": "ok",
+  "processed": 0,
+  "email_targets": 0,
+  "telegram_targets": 0
+}
+```
+응답 예(실패):
+```json
+{
+  "detail": "forbidden"
+}
+```
+
 ## Assistant (RAG-lite)
 ### 질문하기
 ```http

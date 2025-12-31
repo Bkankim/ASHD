@@ -295,16 +295,20 @@ uv run python app/run_daily_notifications.py
 
 ### 7.2 cron 등으로 스케줄링 (운영 환경)
 
-리눅스 서버 등에서 운영할 경우, 다음과 같이 cron에 등록할 수 있습니다 (예시).
+무료 PaaS 환경에서는 **외부 cron이 HTTP로 호출**하는 방식을 권장합니다.
 
-```cron
-0 3 * * * cd /path/to/ASHD && uv run python app/run_daily_notifications.py >> logs/daily_alert.log 2>&1
+* 설정 위치: `CRON_SECRET` 환경 변수(예: PaaS 환경 변수 설정)
+* 호출 엔드포인트: `POST /internal/cron/daily-alerts`
+
+예시(로컬/운영 공통):
+
+```bash
+curl -X POST "https://<your-domain>/internal/cron/daily-alerts" \\
+  -H "X-CRON-SECRET: <cron-secret>"
 ```
 
-* 매일 새벽 3시에 배치 작업 실행
-* 표준 출력/에러를 로그 파일로 리다이렉트 (필요 시)
-
-> 운영 환경의 경로/로그 정책에 맞게 조정해야 합니다.
+* CRON_SECRET이 없거나 틀리면 403을 반환합니다.
+* 성공 시 200과 요약 JSON을 반환합니다.
 
 ---
 

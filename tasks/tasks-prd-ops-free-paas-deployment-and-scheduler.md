@@ -41,7 +41,8 @@
     - 근거: `tests/test_cron.py`에서 403/501 검증 + `UV_CACHE_DIR=/home/sweetbkan/ASHD/.uv_cache uv run pytest` 통과
   - [x] 2.3 `generate_daily_alerts()` 호출 + 요약 응답 반환 (파일: `app/api/routes/cron.py`; 검증: pytest)
     - 근거: `tests/test_cron.py`에서 200 응답/processed 확인 + `UV_CACHE_DIR=/home/sweetbkan/ASHD/.uv_cache uv run pytest` 통과
-  - [ ] 2.4 문서에 cron 호출 예시 추가 (파일: `docs/DEV_GUIDE.md`, `docs/API_EXAMPLES.md`; 검증: 문서 리뷰)
+  - [x] 2.4 문서에 cron 호출 예시 추가 (파일: `docs/DEV_GUIDE.md`, `docs/API_EXAMPLES.md`; 검증: 문서 리뷰)
+    - 근거: DEV_GUIDE에 CRON_SECRET/HTTP 호출 예시 추가, API_EXAMPLES에 200/403 응답 예시 추가
 
 - [ ] 3.0 무료 PaaS 제약 대응(파일 소실/슬립)
   - [ ] 3.1 업로드 파일 소실 시 graceful 처리 가이드/정책 정리 (파일: `docs/SYSTEM_ARCHITECTURE.md`, `docs/PROJECT_OVERVIEW.md`; 검증: 문서 리뷰)
