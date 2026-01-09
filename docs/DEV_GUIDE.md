@@ -310,6 +310,11 @@ curl -X POST "https://<your-domain>/internal/cron/daily-alerts" \\
 * CRON_SECRET이 없거나 틀리면 403을 반환합니다.
 * 성공 시 200과 요약 JSON을 반환합니다.
 
+GitHub Actions로 매일 1회 호출하고 싶다면 아래 기준을 권장합니다.
+
+* 워크플로우 예시: `.github/workflows/daily-alerts.yml`
+* Secrets: `DEPLOY_URL`, `CRON_SECRET`
+
 ---
 
 ## 8. 테스트 실행 가이드 (초기)

@@ -130,9 +130,18 @@ X-CRON-SECRET: <cron-secret>
 ```json
 {
   "status": "ok",
+  "date": "2024-01-01",
   "processed": 0,
   "email_targets": 0,
-  "telegram_targets": 0
+  "telegram_targets": 0,
+  "email_sent": 0,
+  "telegram_sent": 0,
+  "skipped": {
+    "email": true,
+    "telegram": true,
+    "reason": "email_and_telegram_not_configured"
+  },
+  "errors": []
 }
 ```
 응답 예(실패):
