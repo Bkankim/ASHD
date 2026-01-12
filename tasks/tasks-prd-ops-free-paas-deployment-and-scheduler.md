@@ -19,11 +19,11 @@
 - Implemented candidates (근거 확인됨):
   - `/health` 공개 엔드포인트 존재 (`app/api/routes/health.py`)
   - 마스킹 정책 및 `/auth` 예외 유지 (`app/api/middlewares/redaction.py`)
-  - `generate_daily_alerts()` 스켈레톤 존재 (`app/services/notification_service.py`)
+  - 일일 알림 계산/전송 로직 존재 (`app/services/notification_service.py` + `app/api/routes/cron.py`)
+  - cron 호출 문서/예시 존재 (`docs/DEV_GUIDE.md`, `docs/API_EXAMPLES.md`)
 - Gaps/Questions:
-  - `/internal/cron/*` 라우트 없음
-  - 운영용 실행 커맨드/PORT 처리 문서화 필요
   - 무료 PaaS 제약(디스크 소실/슬립) 문서 정합성 필요
+  - 배포 환경 변수 목록(P0: PORT/CRON_SECRET) 문서화 필요
 
 ## Tasks
 
