@@ -1,0 +1,34 @@
+{
+  "job": {
+    "id": 1,
+    "status": "completed",
+    "error": null,
+    "document_id": 1,
+    "product_id": 1,
+    "created_at": "2026-01-14T17:50:25.748026",
+    "updated_at": "2026-01-14T17:50:25.768912"
+  },
+  "documents": {
+    "detail": "documents route unavailable"
+  },
+  "products": [
+    {
+      "title": "상호: 테스트마트",
+      "product_category": null,
+      "purchase_date": "2024-01-10",
+      "amount": 12000,
+      "store": "테스트마트",
+      "order_id": "A-1004",
+      "refund_deadline": null,
+      "warranty_end_date": null,
+      "as_contact": null,
+      "image_path": "uploads/d97749d1520e4c5193be02cfe43a82dc.jpg",
+      "raw_text": "상호: 테스트마트\n구매일: 2024-01-10\n금액: 12,000원\n주문번호: A-1004",
+      "id": 1,
+      "user_id": 1,
+      "created_at": "2026-01-14T17:50:25.762576",
+      "updated_at": "2026-01-14T17:50:25.762578"
+    }
+  ],
+  "notes": "키가 없으면 Mock OCR/LLM 결과가 저장됩니다."
+}
