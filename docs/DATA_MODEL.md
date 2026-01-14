@@ -9,9 +9,9 @@ ASHD 데이터 모델은 다음 엔티티들을 중심으로 설계됩니다.
 * `NotificationSettings` : 사용자별 알림 설정
 * `TelegramAccount` : 사용자별 텔레그램 계정 연동 정보
 * `Document` : 업로드 문서 원문 텍스트
-* `DocumentChunk` : 문서 분할 청크
-* `Embedding` : 임베딩 벡터 저장(업그레이드 경로)
-* `LLMCache` : LLM 응답 캐시
+* `DocumentChunk` : 문서 분할 청크 (v0.2 대비 스키마, v0.1 런타임 미사용)
+* `Embedding` : 임베딩 벡터 저장(업그레이드 경로, v0.1 런타임 미사용)
+* `LLMCache` : LLM 응답 캐시 (v0.1 미사용, v0.2 계획)
 * `DocumentProcessingJob` : 문서 처리 Job 상태
 
 RDBMS는 초기에는 **SQLite**(파일 기반)를 가정하고, 향후 PostgreSQL 등의 RDB로 확장 가능합니다. ORM 계층은 **SQLModel**을 사용하며, HTTP 요청/응답 DTO는 Pydantic 스키마(`app/schemas/`)로 분리합니다.

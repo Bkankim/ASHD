@@ -72,16 +72,15 @@ v0.2에서는 **RAG-lite(키워드 검색 + LLM 요약)** 레이어를 추가하
   * 텔레그램 웹훅/연동 엔드포인트 (텔레그램 계정 연결 시)
   * RAG-lite 질의 응답(`/assistant/*`) 엔드포인트
 
-### 2.2 배치 알림 작업
+### 2.2 일일 알림 트리거 (외부 스케줄러)
 
-* 프로세스 예시 (향후 구현):
-
-  * `uv run python app/scheduler.py` 혹은 APScheduler로 API 프로세스 내부에서 주기 실행
+* 무료 PaaS 전제: 서버 내부 스케줄러 대신 **외부 스케줄러(예: GitHub Actions)**가 HTTP로 호출
+* 호출 엔드포인트: `POST /internal/cron/daily-alerts`
+  * 헤더 `X-CRON-SECRET`(= `CRON_SECRET`) 필요, 없거나 틀리면 403
 * 역할:
 
-  * 매일 1회, 현재 날짜 기준으로 보증/환불 임박 항목 조회
-  * `notification_service.generate_daily_alerts()` 호출로 DailyAlert 리스트 생성
-  * 각 알림에 대해 `email_service`, `telegram_service` 호출하여 실제 전송 수행
+  * 호출 시 현재 날짜 기준으로 보증/환불 임박 항목 조회
+  * `notification_service.run_daily_alerts()` → DailyAlert 계산 및 이메일/텔레그램 발송(설정 없으면 skip)
 
 ### 2.3 외부 서비스 의존성
 
@@ -244,19 +243,19 @@ v0.2에서는 **RAG-lite(키워드 검색 + LLM 요약)** 레이어를 추가하
    * Job 상태를 `completed`로 변경
 5. 클라이언트는 `GET /jobs/{id}`로 상태를 조회하고, 완료 후 제품 정보를 확인
 
-### 4.2 Daily Alert 알림 플로우 (배치)
+### 4.2 Daily Alert 알림 플로우 (외부 cron 호출)
 
-1. 스케줄러(별도 프로세스 또는 APScheduler)가 하루 1회 실행
-2. `notification_service.generate_daily_alerts()` 호출
+1. 외부 스케줄러(예: GitHub Actions)가 하루 1회 `POST /internal/cron/daily-alerts` 호출
+   * 헤더 `X-CRON-SECRET`가 유효하지 않으면 403
+2. `notification_service.run_daily_alerts()` 실행
 
-   * 현재 날짜 기준으로 DB에서 Product/NotificationSettings를 조회
-   * 환불/보증 임박 조건(D-30, D-7, D-3 등)을 만족하는 항목 필터링
-   * 사용자별로 `DailyAlert` 구조에 알림 리스트를 묶음
-3. 각 `DailyAlert`에 대해:
+   * 현재 날짜 기준으로 DB에서 Product/NotificationSettings 조회
+   * 환불/보증 임박 조건(D-30, D-7, D-3 등) 충족 항목을 사용자별로 묶음
+3. 전송 단계:
 
-   * 이메일 알림이 활성화된 사용자 → `email_service.send_email()` 호출
-   * 텔레그램 알림이 활성화된 사용자 → `telegram_service.send_telegram_message()` 호출
-4. (선택) 발송 결과/실패 이력은 추후 `NotificationLog` 모델 등으로 확장 가능 (v0.1에서는 단순 로그 수준으로 처리 예정)
+   * 이메일 설정이 모두 존재하면 `email_service.send_email()` 호출, 없으면 skip
+   * 텔레그램 토큰/연동(chat_id)이 있으면 `telegram_service.send_telegram_message()` 호출, 없으면 skip
+4. 실패/미구현 채널은 errors/skip 요약에 남기고 200 응답 유지(무료 PaaS 안정성 우선)
 
 ---
 
