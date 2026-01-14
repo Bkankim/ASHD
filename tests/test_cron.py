@@ -26,6 +26,18 @@ def test_cron_forbidden_without_secret(monkeypatch) -> None:
     assert response.status_code == 403
 
 
+# 시크릿이 틀리면 403을 반환하는지 확인합니다.
+def test_cron_forbidden_with_wrong_secret(monkeypatch) -> None:
+    monkeypatch.setenv("CRON_SECRET", "expected")
+    get_settings.cache_clear()
+    app = _build_app()
+    response = TestClient(app).post(
+        "/internal/cron/daily-alerts",
+        headers={"X-CRON-SECRET": "wrong"},
+    )
+    assert response.status_code == 403
+
+
 # 올바른 시크릿이면 200을 반환하는지 확인합니다.
 def test_cron_authorized_returns_200(monkeypatch) -> None:
     monkeypatch.setenv("CRON_SECRET", "test-secret")
@@ -59,3 +71,4 @@ def test_cron_authorized_returns_200(monkeypatch) -> None:
     assert payload["processed"] == 1
     assert payload["email_targets"] == 1
     assert payload["email_sent"] == 1
+    assert "telegram_sent" in payload

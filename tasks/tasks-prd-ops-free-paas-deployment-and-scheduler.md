@@ -45,10 +45,13 @@
     - 근거: DEV_GUIDE에 CRON_SECRET/HTTP 호출 예시 추가, API_EXAMPLES에 200/403 응답 예시 추가
 
 - [ ] 3.0 무료 PaaS 제약 대응(파일 소실/슬립)
-  - [ ] 3.1 업로드 파일 소실 시 graceful 처리 가이드/정책 정리 (파일: `docs/SYSTEM_ARCHITECTURE.md`, `docs/PROJECT_OVERVIEW.md`; 검증: 문서 리뷰)
+  - [x] 3.1 업로드 파일 소실 시 graceful 처리 가이드/정책 정리 (파일: `docs/SYSTEM_ARCHITECTURE.md`, `docs/PROJECT_OVERVIEW.md`; 검증: 문서 리뷰/rg)
+    - 근거: SYSTEM_ARCHITECTURE에 uploads best-effort/DB 텍스트 중심/소실 시 안내, PROJECT_OVERVIEW에 업로드 소실 가능 정책 명시
 
 - [ ] 4.0 운영 문서/체크리스트 정합화
-  - [ ] 4.1 배포 환경 변수 목록 정리(특히 PORT, CRON_SECRET) (파일: `.env.example`, `docs/DEV_GUIDE.md`, `README.md`; 검증: 문서 리뷰)
+  - [x] 4.1 배포 환경 변수 목록 정리(특히 PORT, CRON_SECRET) (파일: `.env.example`, `docs/DEV_GUIDE.md`, `README.md`; 검증: 문서 리뷰/rg)
+    - 근거: 세 문서에 PORT/CRON_SECRET/DATABASE_URL/SECRET_KEY/OCR/LLM/SMTP/Telegram 키 설명 동기화
 
 - [ ] 5.0 스모크/테스트 검증
-  - [ ] 5.1 cron 엔드포인트 테스트 추가/통과 확인 (파일: `tests/test_cron.py` 또는 기존 테스트; 검증: `UV_CACHE_DIR=/home/sweetbkan/ASHD/.uv_cache uv run pytest`)
+  - [x] 5.1 cron 엔드포인트 테스트 추가/통과 확인 (파일: `tests/test_cron.py`; 검증: `UV_CACHE_DIR=/home/sweetbkan/ASHD/.uv_cache uv run pytest`)
+    - 근거: test_cron에 시크릿 없음/오류 403, 정상 200+요약 필드 검증 추가 후 pytest green
