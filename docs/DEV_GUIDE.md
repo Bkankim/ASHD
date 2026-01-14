@@ -96,12 +96,16 @@ uv run uvicorn app.main:app --reload
 # 예시: 기본 설정
 APP_ENV=local
 APP_DEBUG=true
+PORT=8000                  # PaaS가 주는 포트를 주입 (운영 시 필수)
 
 # DB 설정 (v0.1: sync SQLite 예시, 운영 시 PostgreSQL URL로 교체)
 DATABASE_URL=sqlite:///./ashd.db
 
 # 민감정보 마스킹 설정 (라벨 없는 카드번호 후보까지 탐지할지 여부)
 REDACTION_STRICT=false
+
+# cron 보호 시크릿 (외부 스케줄러 호출 시 필수)
+CRON_SECRET=
 
 # 이메일 (SMTP) 설정 예시
 SMTP_HOST=smtp.example.com
@@ -175,6 +179,21 @@ uv run uvicorn app.main:app --reload
 
 정상적으로 `{ "status": "ok" }` 등의 응답이 나오고,
 Swagger UI에서 엔드포인트 목록이 표시되면 개발 서버가 올바르게 동작하는 것입니다.
+
+### 5.3 운영 실행(무료 PaaS 기준)
+
+v0.1 무료 PaaS 운영 기준에서 **ASGI 서버는 uvicorn 단독 실행을 표준으로 고정**합니다.
+gunicorn(또는 다른 프로세스 매니저) 기반 구성은 v0.1 문서에 포함하지 않습니다.
+
+무료 PaaS 환경에서는 포트가 고정되지 않을 수 있으므로, `PORT` 환경 변수를 사용하는 방식을 권장합니다.
+
+```bash
+uv run uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}
+```
+
+* 운영 환경에서는 `--reload`를 사용하지 않습니다.
+* PaaS가 제공하는 `PORT` 환경 변수가 있으면 해당 포트로 바인딩합니다.
+* uvicorn 단독 실행은 무료 PaaS에서 **설정 최소화/운영 단순화**를 우선하기 위함입니다.
 
 ---
 
@@ -280,16 +299,25 @@ uv run python app/run_daily_notifications.py
 
 ### 7.2 cron 등으로 스케줄링 (운영 환경)
 
-리눅스 서버 등에서 운영할 경우, 다음과 같이 cron에 등록할 수 있습니다 (예시).
+무료 PaaS 환경에서는 **외부 cron이 HTTP로 호출**하는 방식을 권장합니다.
 
-```cron
-0 3 * * * cd /path/to/ASHD && uv run python app/run_daily_notifications.py >> logs/daily_alert.log 2>&1
+* 설정 위치: `CRON_SECRET` 환경 변수(예: PaaS 환경 변수 설정)
+* 호출 엔드포인트: `POST /internal/cron/daily-alerts`
+
+예시(로컬/운영 공통):
+
+```bash
+curl -X POST "https://<your-domain>/internal/cron/daily-alerts" \\
+  -H "X-CRON-SECRET: <cron-secret>"
 ```
 
-* 매일 새벽 3시에 배치 작업 실행
-* 표준 출력/에러를 로그 파일로 리다이렉트 (필요 시)
+* CRON_SECRET이 없거나 틀리면 403을 반환합니다.
+* 성공 시 200과 요약 JSON을 반환합니다.
 
-> 운영 환경의 경로/로그 정책에 맞게 조정해야 합니다.
+GitHub Actions로 매일 1회 호출하고 싶다면 아래 기준을 권장합니다.
+
+* 워크플로우 예시: `.github/workflows/daily-alerts.yml`
+* Secrets: `DEPLOY_URL`, `CRON_SECRET`
 
 ---
 

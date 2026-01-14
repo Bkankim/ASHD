@@ -12,6 +12,7 @@ from sqlmodel import Session, SQLModel
 # from app.api.routes import auth, health, notification_settings, products, telegram_account
 from app.api.routes import (
     auth,
+    cron,
     documents,
     health,
     jobs,
@@ -60,6 +61,7 @@ def create_app() -> FastAPI:
 
     # 헬스 체크 및 도메인 관련 라우터 등록
     app.include_router(health.router)
+    app.include_router(cron.router)
     app.include_router(documents.router)
     app.include_router(jobs.router)
     app.include_router(products.router)

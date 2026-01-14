@@ -120,6 +120,37 @@ Content-Type: application/json
 }
 ```
 
+## Cron (운영 트리거)
+### 일일 알림 트리거
+```http
+POST /internal/cron/daily-alerts
+X-CRON-SECRET: <cron-secret>
+```
+응답 예(성공):
+```json
+{
+  "status": "ok",
+  "date": "2024-01-01",
+  "processed": 0,
+  "email_targets": 0,
+  "telegram_targets": 0,
+  "email_sent": 0,
+  "telegram_sent": 0,
+  "skipped": {
+    "email": true,
+    "telegram": true,
+    "reason": "email_and_telegram_not_configured"
+  },
+  "errors": []
+}
+```
+응답 예(실패):
+```json
+{
+  "detail": "forbidden"
+}
+```
+
 ## Assistant (RAG-lite)
 ### 질문하기
 ```http
