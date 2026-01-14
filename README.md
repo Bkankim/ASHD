@@ -27,3 +27,13 @@ uv run uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}
 
 * 운영 환경에서는 `--reload`를 사용하지 않습니다.
 * PaaS가 제공하는 `PORT` 환경 변수를 우선 사용합니다.
+
+## 주요 환경 변수(운영 시)
+
+- `PORT` : PaaS가 주는 포트에 바인딩
+- `CRON_SECRET` : `/internal/cron/daily-alerts` 호출 시 `X-CRON-SECRET` 헤더로 전달
+- `DATABASE_URL`, `SECRET_KEY`
+- `OCR_API_URL`, `OCR_API_KEY`, `DOCUMENT_UPLOAD_DIR`
+- `LLM_BASE_URL`, `LLM_API_KEY`
+- `SMTP_*`, `TELEGRAM_BOT_TOKEN`
+- 상세 예시는 `.env.example`, `docs/DEV_GUIDE.md`를 참고하세요.

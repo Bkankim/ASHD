@@ -96,12 +96,16 @@ uv run uvicorn app.main:app --reload
 # 예시: 기본 설정
 APP_ENV=local
 APP_DEBUG=true
+PORT=8000                  # PaaS가 주는 포트를 주입 (운영 시 필수)
 
 # DB 설정 (v0.1: sync SQLite 예시, 운영 시 PostgreSQL URL로 교체)
 DATABASE_URL=sqlite:///./ashd.db
 
 # 민감정보 마스킹 설정 (라벨 없는 카드번호 후보까지 탐지할지 여부)
 REDACTION_STRICT=false
+
+# cron 보호 시크릿 (외부 스케줄러 호출 시 필수)
+CRON_SECRET=
 
 # 이메일 (SMTP) 설정 예시
 SMTP_HOST=smtp.example.com
