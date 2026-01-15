@@ -26,6 +26,8 @@ class DailyAlertItem:
     purchase_date: date | None
     refund_deadline: date | None
     warranty_end_date: date | None
+    amount: int | None = None
+    store: str | None = None
 
 
 # 사용자별 알림 묶음을 표현하는 데이터 구조입니다.
@@ -105,6 +107,8 @@ def _collect_due_items(
                 purchase_date=product.purchase_date,
                 refund_deadline=product.refund_deadline,
                 warranty_end_date=product.warranty_end_date,
+                amount=product.amount,
+                store=product.store,
             )
         )
     return items
@@ -112,11 +116,30 @@ def _collect_due_items(
 
 # 사용자에게 보낼 간단한 텍스트 메시지를 생성합니다.
 def _format_alert_message(alert: DailyAlert, today: date) -> str:
-    """알림 메시지를 단순 텍스트로 구성합니다."""
+    """알림 메시지를 상세하게 구성합니다."""
 
-    lines = [f"[ASHD] {today.isoformat()} 알림", "임박 항목:"]
+    lines = [
+        "🔔 [ASHD] 환불/보증 임박 알림",
+        f"📅 {today.isoformat()}",
+        "",
+        "아래 항목의 기한이 다가오고 있습니다:",
+        "",
+    ]
     for item in alert.items:
-        lines.append(f"- {item.title}")
+        lines.append(f"📦 {item.title}")
+        if item.amount:
+            lines.append(f"   💵 금액: {item.amount:,}원")
+        if item.store:
+            lines.append(f"   🏪 구매처: {item.store}")
+        if item.refund_deadline:
+            days_left = (item.refund_deadline - today).days
+            lines.append(f"   ⏰ 환불 마감: {item.refund_deadline} (D-{days_left})")
+        if item.warranty_end_date:
+            days_left = (item.warranty_end_date - today).days
+            lines.append(f"   🛡️ 보증 만료: {item.warranty_end_date} (D-{days_left})")
+        lines.append("")
+    
+    lines.append("⚠️ 기한 내에 처리하세요!")
     return "\n".join(lines)
 
 
