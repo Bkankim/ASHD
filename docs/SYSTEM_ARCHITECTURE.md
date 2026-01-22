@@ -10,9 +10,9 @@ v0.2에서는 **RAG-lite(키워드 검색 + LLM 요약)** 레이어를 추가하
 * 백엔드: FastAPI
 * 데이터 계층: SQLModel 기반 RDB (초기에는 파일 기반 SQLite를 가정 가능)
 * 비즈니스 로직: `app/services/` 모듈들
-* 문서 처리 파이프라인: LangGraph 기반 그래프 (`app/graphs/`)
+* 문서 처리 파이프라인: 서비스 레이어 중심(현 구현) + `app/graphs/`는 v0.2 대비 설계(런타임 필수 아님)
 * 알림 채널: 이메일, 텔레그램
-* 스케줄링: 매일 1회 실행되는 배치 작업 (APSheduler 등으로 구현 예정)
+* 스케줄링: 외부 스케줄러가 `POST /internal/cron/daily-alerts` 호출 (무료 PaaS 표준)
 * 실행/의존성 관리: `uv` + `pyproject.toml`
 
 ### 1.2 논리적 컴포넌트
@@ -43,13 +43,13 @@ v0.2에서는 **RAG-lite(키워드 검색 + LLM 요약)** 레이어를 추가하
 
    * `app/retrieval/` : 키워드 기반 검색(FTS/LIKE) Retriever
    * `app/llm/` : LLM Client 인터페이스 + Mock/외부 API 어댑터
-   * `app/services/assistant.py` : evidence 생성 + LLM 답변 + 캐시/쿼터 로직
-   * `app/models/document*.py` : 문서/청크/임베딩/캐시 테이블
+   * `assistant` 서비스/엔드포인트: v0.2 예정(현재 v0.1 미구현)
+   * `app/models/document*.py` : 문서/청크/임베딩/캐시 테이블(업그레이드 대비)
 
-5. **그래프 레이어 (LangGraph)**
+5. **그래프 레이어 (LangGraph, v0.2 대비)**
 
-   * `app/graphs/document_ingest_graph.py` : 영수증/보증서 이미지 업로드 후 처리 과정을 그래프로 정의
-   * 노드 단위로 OCR, 파싱, 검증 등의 단계를 함수로 분리하고, 상태(State)를 흐르게 함
+   * `app/graphs/document_ingest_graph.py` : 업로드 후 처리 과정을 그래프로 정의(현재 v0.1 런타임 필수 아님)
+   * 노드 단위로 OCR, 파싱, 검증 등을 분리하는 확장 경로로 유지
 
 6. **인프라/환경 레イヤ**
 
@@ -70,7 +70,7 @@ v0.2에서는 **RAG-lite(키워드 검색 + LLM 요약)** 레이어를 추가하
   * 인증/인가 처리 (v0.1 기준: 이메일 + 비밀번호 + JWT)
   * 파일 업로드 (영수증/보증서 이미지)
   * 텔레그램 웹훅/연동 엔드포인트 (텔레그램 계정 연결 시)
-  * RAG-lite 질의 응답(`/assistant/*`) 엔드포인트
+  * RAG-lite 질의 응답(`/assistant/*`) 엔드포인트는 v0.2 이후 도입 예정
 
 ### 2.2 일일 알림 트리거 (외부 스케줄러)
 
@@ -110,7 +110,7 @@ v0.2에서는 **RAG-lite(키워드 검색 + LLM 요약)** 레이어를 추가하
 
 ## 3. 디렉터리 구조와 역할
 
-아래 구조는 스캐폴드 스크립트(`scaffold_ashd.py`) 기준입니다.
+아래 구조는 **현재 리포 기준**으로 정리했습니다.
 
 ```text
 .
@@ -150,7 +150,6 @@ v0.2에서는 **RAG-lite(키워드 검색 + LLM 요약)** 레이어를 추가하
     │       ├── products.py
     │       ├── notification_settings.py
     │       ├── telegram_account.py
-    │       └── assistant.py
     ├── models/
     │   ├── __init__.py
     │   ├── user.py
@@ -170,7 +169,6 @@ v0.2에서는 **RAG-lite(키워드 검색 + LLM 요약)** 레이어를 추가하
     │   ├── job.py
     │   ├── notification_settings.py
     │   ├── telegram_account.py
-    │   └── assistant.py
     ├── services/
     │   ├── __init__.py
     │   ├── document_processing.py
@@ -178,7 +176,6 @@ v0.2에서는 **RAG-lite(키워드 검색 + LLM 요약)** 레이어를 추가하
     │   ├── email_service.py
     │   ├── telegram_service.py
     │   ├── notification_service.py
-    │   └── assistant.py
     ├── ocr/
     │   ├── __init__.py
     │   ├── base.py

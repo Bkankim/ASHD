@@ -151,25 +151,6 @@ X-CRON-SECRET: <cron-secret>
 }
 ```
 
+
 ## Assistant (RAG-lite)
-### 질문하기
-```http
-POST /assistant/ask
-Authorization: Bearer <access_token>
-Content-Type: application/json
-
-{
-  "question": "이 제품 환불 기한이 언제야?"
-}
-```
-
-### 알림 미리보기
-```http
-POST /assistant/alerts/preview
-Authorization: Bearer <access_token>
-Content-Type: application/json
-
-{
-  "base_date": "2024-01-10"
-}
-```
+> v0.1 범위에는 포함되지 않습니다. (v0.2 이후 도입 예정)

@@ -15,3 +15,6 @@ build/
 *.db
 *.db-journal
 uploads/
+.serena/
+handoff/state/
+handoff_ashd_production.zip
