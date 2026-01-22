@@ -115,3 +115,10 @@ PY
 - 제외 대상: .serena/, handoff/state/*, handoff_ashd_production.zip
 - 처리 방식: .gitignore에 .serena/·handoff/state/·handoff_ashd_production.zip 추가
 
+
+## 8) UI 스모크 체크리스트 (수동)
+- [ ] /app/login.html 로그인 성공
+- [ ] /app/upload.html 업로드 → job completed → product 이동
+- [ ] /app/product.html 제품 수정 저장
+- [ ] /app/settings.html 알림 설정 저장
+- [ ] /app/telegram.html 연동 조회/해제 확인

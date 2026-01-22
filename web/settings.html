@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ASHD 알림 설정</title>
+    <link rel="stylesheet" href="/app/styles.css" />
+  </head>
+  <body>
+    <header>
+      <nav>
+        <a href="/app/upload.html">업로드</a>
+        <a href="/app/products.html">제품 목록</a>
+        <a href="/app/settings.html">알림 설정</a>
+        <a href="/app/telegram.html">텔레그램</a>
+      </nav>
+    </header>
+    <main>
+      <section>
+        <h2>알림 설정</h2>
+        <div class="grid">
+          <label><input id="email_enabled" type="checkbox" /> 이메일 알림 사용</label>
+          <label><input id="telegram_enabled" type="checkbox" /> 텔레그램 알림 사용</label>
+          <div>
+            <label for="warranty_days_before">보증 만료 알림 (예: 30,7,3)</label>
+            <input id="warranty_days_before" type="text" />
+          </div>
+          <div>
+            <label for="refund_days_before">환불 마감 알림 (예: 3)</label>
+            <input id="refund_days_before" type="text" />
+          </div>
+        </div>
+        <div class="inline-actions">
+          <button id="save-button">저장</button>
+        </div>
+        <p id="settings-status" class="status"></p>
+      </section>
+    </main>
+    <script src="/app/shared.js"></script>
+    <script>
+      requireAuth();
+
+      async function loadSettings() {
+        showInfo("settings-status", "불러오는 중...");
+        try {
+          const response = await apiFetch("/notification-settings");
+          if (!response.ok) {
+            showError("settings-status", "알림 설정을 불러오지 못했습니다.");
+            return;
+          }
+          const data = await response.json();
+          document.getElementById("email_enabled").checked = Boolean(data.email_enabled);
+          document.getElementById("telegram_enabled").checked = Boolean(data.telegram_enabled);
+          document.getElementById("warranty_days_before").value = joinIntegerList(data.warranty_days_before);
+          document.getElementById("refund_days_before").value = joinIntegerList(data.refund_days_before);
+          showInfo("settings-status", "");
+        } catch (err) {
+          showError("settings-status", "네트워크 오류가 발생했습니다.");
+        }
+      }
+
+      async function saveSettings() {
+        const payload = {
+          email_enabled: document.getElementById("email_enabled").checked,
+          telegram_enabled: document.getElementById("telegram_enabled").checked,
+          warranty_days_before: parseIntegerList(document.getElementById("warranty_days_before").value),
+          refund_days_before: parseIntegerList(document.getElementById("refund_days_before").value),
+        };
+        showInfo("settings-status", "저장 중...");
+        try {
+          const response = await apiFetch("/notification-settings", {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
+          if (!response.ok) {
+            showError("settings-status", "저장 실패");
+            return;
+          }
+          showInfo("settings-status", "저장 완료");
+        } catch (err) {
+          showError("settings-status", "네트워크 오류가 발생했습니다.");
+        }
+      }
+
+      document.getElementById("save-button").addEventListener("click", saveSettings);
+      loadSettings();
+    </script>
+  </body>
+</html>

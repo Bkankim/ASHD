@@ -1,0 +1,93 @@
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: "Noto Sans KR", "Apple SD Gothic Neo", Arial, sans-serif;
+  background: #f6f7fb;
+  color: #1a1a1a;
+}
+header {
+  background: #0f172a;
+  color: #fff;
+  padding: 12px 20px;
+}
+header nav a {
+  color: #fff;
+  margin-right: 12px;
+  text-decoration: none;
+  font-size: 14px;
+}
+main {
+  max-width: 960px;
+  margin: 24px auto;
+  padding: 0 16px 48px;
+}
+section {
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
+}
+label {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+input, textarea, select, button {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d0d7de;
+  border-radius: 8px;
+  font-size: 14px;
+}
+textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+button {
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+}
+button.secondary {
+  background: #64748b;
+}
+button.danger {
+  background: #dc2626;
+}
+.grid {
+  display: grid;
+  gap: 12px;
+}
+.grid.two {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+.notice {
+  font-size: 13px;
+  color: #475569;
+}
+.status {
+  font-size: 14px;
+  color: #0f172a;
+  margin-top: 8px;
+}
+.error {
+  color: #b91c1c;
+}
+.list-item {
+  padding: 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  background: #f8fafc;
+}
+.inline-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+.inline-actions button {
+  width: auto;
+}

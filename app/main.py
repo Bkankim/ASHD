@@ -7,6 +7,8 @@
 """
 
 from fastapi import Depends, FastAPI
+from fastapi.responses import RedirectResponse
+from fastapi.staticfiles import StaticFiles
 from sqlmodel import Session, SQLModel
 
 # from app.api.routes import auth, health, notification_settings, products, telegram_account
@@ -39,6 +41,13 @@ def create_app() -> FastAPI:
         description="AS/환불/보증 관리 서비스 ASHD의 백엔드 API",
         version="0.1.0",
     )
+
+    # 정적 UI를 /app 경로로 서빙합니다. (동일 오리진)
+    app.mount("/app", StaticFiles(directory="web", html=True), name="app")
+
+    @app.get("/")
+    def root_redirect() -> RedirectResponse:
+        return RedirectResponse(url="/app/login.html")
 
     # 응답에 민감정보가 포함되지 않도록 전역 마스킹 미들웨어를 등록합니다.
     app.add_middleware(RedactionMiddleware)

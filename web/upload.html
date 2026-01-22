@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ASHD 업로드</title>
+    <link rel="stylesheet" href="/app/styles.css" />
+  </head>
+  <body>
+    <header>
+      <nav>
+        <a href="/app/upload.html">업로드</a>
+        <a href="/app/products.html">제품 목록</a>
+        <a href="/app/settings.html">알림 설정</a>
+        <a href="/app/telegram.html">텔레그램</a>
+      </nav>
+    </header>
+    <main>
+      <section>
+        <h2>문서 업로드</h2>
+        <p class="notice">
+          이미지/PDF 업로드 가능. 파일 최대 10MB, PDF는 최대 3페이지까지 처리됩니다.
+          (초과 페이지는 무시 + job.error에 경고 기록)
+        </p>
+        <input id="file-input" type="file" accept="image/*,application/pdf" />
+        <div class="inline-actions">
+          <button id="upload-button">업로드</button>
+          <button id="logout-button" class="secondary">로그아웃</button>
+        </div>
+        <p id="upload-status" class="status"></p>
+      </section>
+
+      <section>
+        <h2>Job 상태</h2>
+        <p id="job-status" class="status"></p>
+      </section>
+    </main>
+    <script src="/app/shared.js"></script>
+    <script>
+      requireAuth();
+
+      const uploadButton = document.getElementById("upload-button");
+      const logoutButton = document.getElementById("logout-button");
+      const fileInput = document.getElementById("file-input");
+      const uploadStatus = "upload-status";
+      const jobStatus = "job-status";
+
+      logoutButton.addEventListener("click", () => {
+        setToken("");
+        redirectToLogin();
+      });
+
+      function startPolling(jobId) {
+        const startedAt = Date.now();
+        const interval = setInterval(async () => {
+          const elapsed = Date.now() - startedAt;
+          if (elapsed > 90000) {
+            clearInterval(interval);
+            showError(jobStatus, "처리 시간이 길어지고 있습니다. 잠시 후 다시 확인해주세요.");
+            return;
+          }
+          try {
+            const response = await apiFetch(`/jobs/${jobId}`);
+            const data = await response.json();
+            const statusText = `status: ${data.status}`;
+            showInfo(jobStatus, statusText);
+            if (data.status === "completed") {
+              clearInterval(interval);
+              if (data.product_id) {
+                window.location.href = `/app/product.html?id=${data.product_id}`;
+              }
+            }
+            if (data.status === "failed") {
+              clearInterval(interval);
+              showError(jobStatus, "처리에 실패했습니다. 파일 제한/형식을 확인 후 다시 업로드해주세요.");
+            }
+          } catch (err) {
+            clearInterval(interval);
+            showError(jobStatus, "네트워크 오류로 폴링이 중단되었습니다.");
+          }
+        }, 2000);
+      }
+
+      uploadButton.addEventListener("click", async () => {
+        const file = fileInput.files[0];
+        if (!file) {
+          showError(uploadStatus, "업로드할 파일을 선택해주세요.");
+          return;
+        }
+        if (file.size > 10 * 1024 * 1024) {
+          showError(uploadStatus, "파일이 10MB를 초과합니다.");
+          return;
+        }
+
+        showInfo(uploadStatus, "업로드 중...");
+        const formData = new FormData();
+        formData.append("file", file);
+
+        try {
+          const response = await apiFetch("/documents/upload", {
+            method: "POST",
+            body: formData,
+          });
+          if (!response.ok) {
+            showError(uploadStatus, "업로드 실패: 제한 정책을 확인해주세요.");
+            return;
+          }
+          const data = await response.json();
+          showInfo(uploadStatus, `업로드 완료. job_id=${data.job_id}`);
+          showInfo(jobStatus, "처리 중...");
+          startPolling(data.job_id);
+        } catch (err) {
+          showError(uploadStatus, "네트워크 오류가 발생했습니다.");
+        }
+      });
+    </script>
+  </body>
+</html>
