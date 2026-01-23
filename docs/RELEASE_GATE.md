@@ -119,6 +119,11 @@ PY
 ## 8) UI 스모크 체크리스트 (수동)
 - [ ] /app/login.html 로그인 성공
 - [ ] /app/upload.html 업로드 → job completed → product 이동
+- [ ] /app/upload.html PDF 업로드 → job completed 확인
 - [ ] /app/product.html 제품 수정 저장
 - [ ] /app/settings.html 알림 설정 저장
 - [ ] /app/telegram.html 연동 조회/해제 확인
+
+관찰: 이 환경에서는 브라우저 수동 검증을 수행할 수 없어 미실행. 로컬 브라우저에서 확인 필요.
+추가: PDF OCR 파서 단위 테스트(`tests/test_ocr_parser.py`)는 통과(실제 UI PDF 업로드는 로컬 확인 필요).
+상태: pending (사용자 확인 필요)

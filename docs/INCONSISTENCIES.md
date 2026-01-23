@@ -11,6 +11,7 @@
 | INC-004 | E | docs/DEV_GUIDE.md의 `.env` 예시에 LLM_DAILY_QUOTA/RAG_TOP_K 등 추가 키 | app/core/config.py에는 해당 키 없음, .env.example에도 없음 | AppSettings/.env.example 기준으로 문서 정합 | P0 문서 수정(예시 키 정리) | resolved |
 | INC-005 | C | docs/PROJECT_OVERVIEW.md/ SYSTEM_ARCHITECTURE.md: uploads best-effort, 핵심은 DB 텍스트 | app/models/document.py에 raw_text/parsed_fields 저장, 파일 서빙 라우트 없음 | 정책/구현 일치(파일 소실 시 텍스트 기반 유지) | 문서 유지 | ok |
 | INC-006 | F | AGENTS.md: 모든 CRUD는 current_user.id 스코프 + 404 은닉 | app/api/routes/*에서 user_id 필터 + 404 처리 확인 | 정책/구현 일치 | 유지 | ok |
+| INC-007 | B | PRD/문서: PDF 업로드 지원(202 + job) | files:annotate 중첩 응답 파서 미지원으로 PDF OCR 결과가 비는 사례 발생 | PDF 응답 파서가 중첩 구조를 처리해야 함 | P0 코드 수정(app/ocr/external.py) + 파서 테스트 추가 | resolved |
 
 ## 메모
 - P1 항목은 docs/KNOWN_WARNINGS.md에 대응 계획으로 기록한다.
