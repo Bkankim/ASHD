@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ASHD UI</title>
+    <link rel="stylesheet" href="/app/styles.css" />
+  </head>
+  <body>
+    <main>
+      <section>
+        <h1>ASHD</h1>
+        <p class="notice">로그인 상태에 따라 업로드 화면으로 이동합니다.</p>
+      </section>
+    </main>
+    <script src="/app/shared.js"></script>
+    <script>
+      if (getToken()) {
+        window.location.href = "/app/upload.html";
+      } else {
+        window.location.href = "/app/login.html";
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,86 @@
+{
+  "job": {
+    "id": 33,
+    "status": "completed",
+    "error": null,
+    "document_id": 33,
+    "product_id": 7,
+    "created_at": "2026-01-15T08:00:04.069034",
+    "updated_at": "2026-01-15T08:00:09.047956"
+  },
+  "product": {
+    "title": "Homeplus",
+    "product_category": "과세물품",
+    "purchase_date": "2026-06-01",
+    "amount": 29500,
+    "store": "홈플러스 강서점",
+    "order_id": "000832",
+    "refund_deadline": "2026-01-18",
+    "warranty_end_date": null,
+    "as_contact": "**-****-8000",
+    "image_path": "uploads/51ca3f877780478f8119890f095f04f5.jpg",
+    "raw_text": "Homeplus\n홈플러스 강서점\n220-81-60348 조주연\nTel)**-****-8000\n서울시 강서구 화곡로 398\n•교환/환불/결제변경은 구매 점포에서\n한달(신선7일)이내 가능, 임대매장 예외\n단, 정상(미개봉)상품, 영수증/결제카드 지참\n2026//06 19:48:00[화] TM:000832 NO:0198\n상품명\n단가 수량 금액\n01 뚜스뚜스\n29,500 1 29,500\n과세물품\n26,818\n부가세\n2,682\n결제대상금액\n29,500\n4삼성일반\n5188-3168-****-868* 52\n카드결제:\n29,500\n할부개월 : 일시불\n승인번호: ********\n김*민 (0172-0002-****-374*)\n적립포인트\n29점\n구매/제휴카드\n29/0점\n보유/가용\n67/38점\n※포인트 유효기간은 적립월 기준 2년입니다.\n※등급 혜택은 마이홈플러스 앱에서 확인하세요",
+    "id": 7,
+    "user_id": 2,
+    "created_at": "2026-01-15T08:00:09.040631",
+    "updated_at": "2026-01-15T08:00:09.040635"
+  },
+  "document": {
+    "id": 33,
+    "title": "test_aug.jpg",
+    "raw_text": "Homeplus\n홈플러스 강서점\n220-81-60348 조주연\nTel)**-****-8000\n서울시 강서구 화곡로 398\n•교환/환불/결제변경은 구매 점포에서\n한달(신선7일)이내 가능, 임대매장 예외\n단, 정상(미개봉)상품, 영수증/결제카드 지참\n2026//06 19:48:00[화] TM:000832 NO:0198\n상품명\n단가 수량 금액\n01 뚜스뚜스\n29,500 1 29,500\n과세물품\n26,818\n부가세\n2,682\n결제대상금액\n29,500\n4삼성일반\n5188-3168-****-868* 52\n카드결제:\n29,500\n할부개월 : 일시불\n승인번호: ********\n김*민 (0172-0002-****-374*)\n적립포인트\n29점\n구매/제휴카드\n29/0점\n보유/가용\n67/38점\n※포인트 유효기간은 적립월 기준 2년입니다.\n※등급 혜택은 마이홈플러스 앱에서 확인하세요...",
+    "parsed_fields": {
+      "as_contact": "**-****-8000",
+      "title": "Homeplus",
+      "purchase_date": "2026-06-01",
+      "amount": 29500,
+      "store": "홈플러스 강서점",
+      "order_id": "000832",
+      "refund_deadline": "2026-07-01",
+      "warranty_end_date": null,
+      "product_category": "과세물품"
+    },
+    "evidence": {
+      "rule_fields": [
+        "as_contact",
+        "title"
+      ],
+      "llm_fields": [
+        "title",
+        "purchase_date",
+        "amount",
+        "store",
+        "order_id",
+        "refund_deadline",
+        "warranty_end_date",
+        "as_contact",
+        "product_category"
+      ]
+    }
+  },
+  "notification": {
+    "settings": {
+      "email_enabled": false,
+      "telegram_enabled": true,
+      "warranty_days_before": [
+        30,
+        7,
+        3
+      ],
+      "refund_days_before": [
+        3
+      ]
+    },
+    "telegram_account": {
+      "chat_id": "6458333628",
+      "linked_at": "2026-01-15 08:23:22.914166"
+    },
+    "alert_triggered": {
+      "date": "2026-01-15",
+      "product_title": "Homeplus",
+      "refund_deadline": "2026-01-18",
+      "days_left": 3
+    }
+  },
+  "notes": "test_aug.jpg로 OCR+LLM 파싱 후, D-3 환불임박 알림을 텔레그램으로 발송한 전체 데모 결과입니다."
+}

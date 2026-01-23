@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ASHD 제품 목록</title>
+    <link rel="stylesheet" href="/app/styles.css" />
+  </head>
+  <body>
+    <header>
+      <nav>
+        <a href="/app/upload.html">업로드</a>
+        <a href="/app/products.html">제품 목록</a>
+        <a href="/app/settings.html">알림 설정</a>
+        <a href="/app/telegram.html">텔레그램</a>
+      </nav>
+    </header>
+    <main>
+      <section>
+        <h2>제품 목록</h2>
+        <div id="product-list"></div>
+        <p id="product-status" class="status"></p>
+      </section>
+    </main>
+    <script src="/app/shared.js"></script>
+    <script>
+      requireAuth();
+
+      async function loadProducts() {
+        showInfo("product-status", "불러오는 중...");
+        try {
+          const response = await apiFetch("/products");
+          if (!response.ok) {
+            showError("product-status", "제품 목록을 가져오지 못했습니다.");
+            return;
+          }
+          const data = await response.json();
+          const listEl = document.getElementById("product-list");
+          listEl.textContent = "";
+          if (!data.length) {
+            showInfo("product-status", "등록된 제품이 없습니다.");
+            return;
+          }
+          showInfo("product-status", "");
+          data.forEach((item) => {
+            const card = document.createElement("div");
+            card.className = "list-item";
+
+            const title = document.createElement("div");
+            title.textContent = item.title || "제목 없음";
+
+            const meta = document.createElement("div");
+            meta.className = "notice";
+            meta.textContent = `구매처: ${item.store || "-"} / 금액: ${item.amount || "-"}`;
+
+            const button = document.createElement("button");
+            button.textContent = "상세 보기";
+            button.addEventListener("click", () => {
+              window.location.href = `/app/product.html?id=${item.id}`;
+            });
+
+            card.appendChild(title);
+            card.appendChild(meta);
+            card.appendChild(button);
+            listEl.appendChild(card);
+          });
+        } catch (err) {
+          showError("product-status", "네트워크 오류가 발생했습니다.");
+        }
+      }
+
+      loadProducts();
+    </script>
+  </body>
+</html>

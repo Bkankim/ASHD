@@ -11,12 +11,12 @@ ASHD v0.1을 **무료 PaaS(0원 운영)** 환경에서 실제로 운영하기 �
   - 근거: `app/main.py`
 - 헬스체크 `/health` 라우트가 존재한다.
   - 근거: `app/api/routes/health.py`
-- 알림 계산 로직 스켈레톤 `generate_daily_alerts()`가 존재한다(아직 TODO 상태).
-  - 근거: `app/services/notification_service.py`
+- 일일 알림 계산/전송 로직 `run_daily_alerts()`가 존재한다.
+  - 근거: `app/services/notification_service.py`, `app/api/routes/cron.py`
 - 마스킹 정책(저장 전 + 응답 전)과 `/auth` 예외가 구현되어 있다.
   - 근거: `app/api/middlewares/redaction.py`, `app/core/redaction.py`, `docs/SECURITY_PRIVACY.md`
-- 스케줄러 HTTP 엔드포인트는 **현재 없음**.
-  - 근거: `app/api/routes/*` 내 `/internal/cron/*` 없음(코드 검색)
+- 스케줄러 HTTP 엔드포인트 `/internal/cron/daily-alerts`가 존재하며 `CRON_SECRET` 보호가 적용된다.
+  - 근거: `app/api/routes/cron.py`, `app/api/dependencies/cron.py`, `tests/test_cron.py`
 
 ## 2. Goals
 

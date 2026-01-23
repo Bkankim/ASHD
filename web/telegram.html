@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ASHD 텔레그램 연동</title>
+    <link rel="stylesheet" href="/app/styles.css" />
+  </head>
+  <body>
+    <header>
+      <nav>
+        <a href="/app/upload.html">업로드</a>
+        <a href="/app/products.html">제품 목록</a>
+        <a href="/app/settings.html">알림 설정</a>
+        <a href="/app/telegram.html">텔레그램</a>
+      </nav>
+    </header>
+    <main>
+      <section>
+        <h2>텔레그램 연동</h2>
+        <p id="telegram-status" class="status"></p>
+        <div class="grid">
+          <div>
+            <label for="chat_id">chat_id</label>
+            <input id="chat_id" type="text" placeholder="예: 12345678" />
+          </div>
+          <div>
+            <label for="username">username (선택)</label>
+            <input id="username" type="text" placeholder="@username" />
+          </div>
+        </div>
+        <div class="inline-actions">
+          <button id="link-button">연동 저장</button>
+          <button id="unlink-button" class="danger">연동 해제</button>
+        </div>
+        <p id="telegram-action" class="status"></p>
+      </section>
+    </main>
+    <script src="/app/shared.js"></script>
+    <script>
+      requireAuth();
+
+      async function loadAccount() {
+        showInfo("telegram-status", "불러오는 중...");
+        try {
+          const response = await apiFetch("/telegram-account");
+          if (response.status === 404) {
+            showInfo("telegram-status", "연동된 계정이 없습니다.");
+            return;
+          }
+          if (!response.ok) {
+            showError("telegram-status", "연동 정보를 불러오지 못했습니다.");
+            return;
+          }
+          const data = await response.json();
+          document.getElementById("chat_id").value = data.chat_id || "";
+          document.getElementById("username").value = data.username || "";
+          showInfo("telegram-status", "연동됨");
+        } catch (err) {
+          showError("telegram-status", "네트워크 오류가 발생했습니다.");
+        }
+      }
+
+      async function linkAccount() {
+        const chatId = document.getElementById("chat_id").value.trim();
+        const username = document.getElementById("username").value.trim();
+        if (!chatId) {
+          showError("telegram-action", "chat_id를 입력하세요.");
+          return;
+        }
+        showInfo("telegram-action", "저장 중...");
+        try {
+          const response = await apiFetch("/telegram-account", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ chat_id: chatId, username: username || null }),
+          });
+          if (!response.ok) {
+            showError("telegram-action", "연동 저장 실패");
+            return;
+          }
+          showInfo("telegram-action", "연동 저장 완료");
+          loadAccount();
+        } catch (err) {
+          showError("telegram-action", "네트워크 오류가 발생했습니다.");
+        }
+      }
+
+      async function unlinkAccount() {
+        showInfo("telegram-action", "해제 중...");
+        try {
+          const response = await apiFetch("/telegram-account", { method: "DELETE" });
+          if (!response.ok) {
+            showError("telegram-action", "연동 해제 실패");
+            return;
+          }
+          showInfo("telegram-action", "연동 해제 완료");
+          document.getElementById("chat_id").value = "";
+          document.getElementById("username").value = "";
+          showInfo("telegram-status", "연동된 계정이 없습니다.");
+        } catch (err) {
+          showError("telegram-action", "네트워크 오류가 발생했습니다.");
+        }
+      }
+
+      document.getElementById("link-button").addEventListener("click", linkAccount);
+      document.getElementById("unlink-button").addEventListener("click", unlinkAccount);
+      loadAccount();
+    </script>
+  </body>
+</html>

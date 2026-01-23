@@ -87,8 +87,24 @@ class ExternalOCRClient:
         responses = data.get("responses", [])
         if not responses:
             return ""
+
+        image_responses: list[dict] = []
+        # files:annotate 응답은 responses[].responses[] 구조입니다.
+        if isinstance(responses[0], dict) and "responses" in responses[0]:
+            for file_resp in responses:
+                file_error = file_resp.get("error") if isinstance(file_resp, dict) else None
+                if file_error:
+                    # 파일 단위 오류는 원문을 노출하지 않고 고정 메시지로 처리합니다.
+                    raise ValueError("VISION_FILE_ANNOTATE_ERROR")
+                nested = file_resp.get("responses", []) if isinstance(file_resp, dict) else []
+                image_responses.extend(nested)
+        else:
+            image_responses = responses
+
         texts: list[str] = []
-        for item in responses:
+        for item in image_responses:
+            if not isinstance(item, dict):
+                continue
             error = item.get("error")
             if error:
                 raise ValueError(error.get("message", "OCR error"))

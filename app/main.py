@@ -6,7 +6,11 @@
 3. uvicorn으로 실행할 수 있도록 __main__ 블록을 제공합니다.
 """
 
+from pathlib import Path
+
 from fastapi import Depends, FastAPI
+from fastapi.responses import RedirectResponse
+from fastapi.staticfiles import StaticFiles
 from sqlmodel import Session, SQLModel
 
 # from app.api.routes import auth, health, notification_settings, products, telegram_account
@@ -26,6 +30,8 @@ from app.core.db import engine, get_session
 from app.core.health import check_db_health
 from app.models import document, job, notification, product, telegram_account, user  # noqa: F401
 
+BASE_DIR = Path(__file__).resolve().parents[1]
+
 
 def create_app() -> FastAPI:
     """FastAPI 애플리케이션 인스턴스를 생성하는 함수입니다.
@@ -39,6 +45,13 @@ def create_app() -> FastAPI:
         description="AS/환불/보증 관리 서비스 ASHD의 백엔드 API",
         version="0.1.0",
     )
+
+    # 정적 UI를 /app 경로로 서빙합니다. (동일 오리진)
+    app.mount("/app", StaticFiles(directory=str(BASE_DIR / "web"), html=True), name="app")
+
+    @app.get("/")
+    def root_redirect() -> RedirectResponse:
+        return RedirectResponse(url="/app/login.html")
 
     # 응답에 민감정보가 포함되지 않도록 전역 마스킹 미들웨어를 등록합니다.
     app.add_middleware(RedactionMiddleware)

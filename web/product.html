@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ASHD 제품 상세</title>
+    <link rel="stylesheet" href="/app/styles.css" />
+  </head>
+  <body>
+    <header>
+      <nav>
+        <a href="/app/upload.html">업로드</a>
+        <a href="/app/products.html">제품 목록</a>
+        <a href="/app/settings.html">알림 설정</a>
+        <a href="/app/telegram.html">텔레그램</a>
+      </nav>
+    </header>
+    <main>
+      <section>
+        <h2>제품 상세</h2>
+        <div class="grid two">
+          <div>
+            <label for="title">제목</label>
+            <input id="title" type="text" />
+          </div>
+          <div>
+            <label for="product_category">카테고리</label>
+            <input id="product_category" type="text" />
+          </div>
+          <div>
+            <label for="purchase_date">구매일</label>
+            <input id="purchase_date" type="date" />
+          </div>
+          <div>
+            <label for="amount">금액</label>
+            <input id="amount" type="number" />
+          </div>
+          <div>
+            <label for="store">구매처</label>
+            <input id="store" type="text" />
+          </div>
+          <div>
+            <label for="order_id">주문번호</label>
+            <input id="order_id" type="text" />
+          </div>
+          <div>
+            <label for="refund_deadline">환불 마감일</label>
+            <input id="refund_deadline" type="date" />
+          </div>
+          <div>
+            <label for="warranty_end_date">보증 만료일</label>
+            <input id="warranty_end_date" type="date" />
+          </div>
+          <div>
+            <label for="as_contact">AS 연락처</label>
+            <input id="as_contact" type="text" />
+          </div>
+          <div>
+            <label for="image_path">이미지 경로</label>
+            <input id="image_path" type="text" />
+          </div>
+        </div>
+        <div>
+          <label for="raw_text">OCR 텍스트 (마스킹됨)</label>
+          <textarea id="raw_text"></textarea>
+        </div>
+        <div class="inline-actions">
+          <button id="save-button">저장</button>
+          <button id="back-button" class="secondary">목록으로</button>
+        </div>
+        <p id="product-status" class="status"></p>
+      </section>
+    </main>
+    <script src="/app/shared.js"></script>
+    <script>
+      requireAuth();
+      const params = new URLSearchParams(window.location.search);
+      const productId = params.get("id");
+      if (!productId) {
+        showError("product-status", "제품 ID가 없습니다.");
+      }
+
+      const fields = [
+        "title",
+        "product_category",
+        "purchase_date",
+        "amount",
+        "store",
+        "order_id",
+        "refund_deadline",
+        "warranty_end_date",
+        "as_contact",
+        "image_path",
+        "raw_text",
+      ];
+
+      async function loadProduct() {
+        try {
+          const response = await apiFetch(`/products/${productId}`);
+          if (!response.ok) {
+            showError("product-status", "제품을 찾을 수 없습니다.");
+            return;
+          }
+          const data = await response.json();
+          fields.forEach((key) => {
+            const input = document.getElementById(key);
+            if (!input) return;
+            input.value = data[key] ?? "";
+          });
+          showInfo("product-status", "");
+        } catch (err) {
+          showError("product-status", "네트워크 오류가 발생했습니다.");
+        }
+      }
+
+      async function saveProduct() {
+        const payload = {};
+        const title = document.getElementById("title").value.trim();
+        if (title) payload.title = title;
+        const productCategory = document.getElementById("product_category").value.trim();
+        if (productCategory) payload.product_category = productCategory;
+        const purchaseDate = document.getElementById("purchase_date").value;
+        if (purchaseDate) payload.purchase_date = purchaseDate;
+        const amount = parseNumber(document.getElementById("amount").value);
+        if (amount !== undefined) payload.amount = amount;
+        const store = document.getElementById("store").value.trim();
+        if (store) payload.store = store;
+        const orderId = document.getElementById("order_id").value.trim();
+        if (orderId) payload.order_id = orderId;
+        const refundDeadline = document.getElementById("refund_deadline").value;
+        if (refundDeadline) payload.refund_deadline = refundDeadline;
+        const warrantyEndDate = document.getElementById("warranty_end_date").value;
+        if (warrantyEndDate) payload.warranty_end_date = warrantyEndDate;
+        const asContact = document.getElementById("as_contact").value.trim();
+        if (asContact) payload.as_contact = asContact;
+        const imagePath = document.getElementById("image_path").value.trim();
+        if (imagePath) payload.image_path = imagePath;
+        const rawText = document.getElementById("raw_text").value.trim();
+        if (rawText) payload.raw_text = rawText;
+
+        showInfo("product-status", "저장 중...");
+        try {
+          const response = await apiFetch(`/products/${productId}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
+          if (!response.ok) {
+            showError("product-status", "저장에 실패했습니다.");
+            return;
+          }
+          showInfo("product-status", "저장 완료");
+        } catch (err) {
+          showError("product-status", "네트워크 오류가 발생했습니다.");
+        }
+      }
+
+      document.getElementById("save-button").addEventListener("click", saveProduct);
+      document.getElementById("back-button").addEventListener("click", () => {
+        window.location.href = "/app/products.html";
+      });
+
+      loadProduct();
+    </script>
+  </body>
+</html>

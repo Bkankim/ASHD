@@ -114,14 +114,10 @@ SMTP_USERNAME=your_smtp_username
 SMTP_PASSWORD=your_smtp_password
 SMTP_FROM=ashd@example.com
 
-# LLM/RAG-lite 설정 예시 (키가 없으면 Mock 동작)
+# LLM 설정 예시 (필드 보완 추출용, 키가 없으면 Mock 동작)
 LLM_BASE_URL=https://api.openai.com/v1
 LLM_API_KEY=your_api_key
 LLM_MODEL=gpt-4o-mini
-LLM_DAILY_QUOTA=20
-LLM_CACHE_TTL_MINUTES=1440
-RAG_TOP_K=5
-ASSISTANT_ALERTS_ENABLED=false
 
 # OCR 외부 API 설정 예시 (Google Vision, 키가 없으면 Mock OCR 동작)
 OCR_API_URL=https://vision.googleapis.com/v1/images:annotate

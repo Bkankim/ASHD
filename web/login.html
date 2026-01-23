@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ASHD 로그인</title>
+    <link rel="stylesheet" href="/app/styles.css" />
+  </head>
+  <body>
+    <header>
+      <nav>
+        <a href="/app/login.html">로그인</a>
+      </nav>
+    </header>
+    <main>
+      <section>
+        <h2>로그인</h2>
+        <div class="grid">
+          <div>
+            <label for="login-email">이메일</label>
+            <input id="login-email" type="email" placeholder="you@example.com" />
+          </div>
+          <div>
+            <label for="login-password">비밀번호</label>
+            <input id="login-password" type="password" placeholder="비밀번호" />
+          </div>
+          <button id="login-button">로그인</button>
+        </div>
+        <p id="login-status" class="status"></p>
+      </section>
+
+      <section>
+        <h2>회원가입</h2>
+        <div class="grid">
+          <div>
+            <label for="register-email">이메일</label>
+            <input id="register-email" type="email" placeholder="you@example.com" />
+          </div>
+          <div>
+            <label for="register-password">비밀번호</label>
+            <input id="register-password" type="password" placeholder="비밀번호" />
+          </div>
+          <button id="register-button" class="secondary">회원가입</button>
+        </div>
+        <p id="register-status" class="status"></p>
+      </section>
+    </main>
+    <script src="/app/shared.js"></script>
+    <script>
+      setToken("");
+
+      const loginButton = document.getElementById("login-button");
+      const registerButton = document.getElementById("register-button");
+
+      loginButton.addEventListener("click", async () => {
+        showInfo("login-status", "로그인 중...");
+        const email = document.getElementById("login-email").value.trim();
+        const password = document.getElementById("login-password").value.trim();
+
+        try {
+          const response = await fetch("/auth/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password }),
+          });
+          if (!response.ok) {
+            showError("login-status", "로그인 실패: 이메일/비밀번호를 확인하세요.");
+            return;
+          }
+          const data = await response.json();
+          setToken(data.access_token);
+          window.location.href = "/app/upload.html";
+        } catch (err) {
+          showError("login-status", "네트워크 오류가 발생했습니다.");
+        }
+      });
+
+      registerButton.addEventListener("click", async () => {
+        showInfo("register-status", "회원가입 중...");
+        const email = document.getElementById("register-email").value.trim();
+        const password = document.getElementById("register-password").value.trim();
+
+        try {
+          const response = await fetch("/auth/register", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password }),
+          });
+          if (!response.ok) {
+            showError("register-status", "회원가입 실패: 이메일 중복 또는 입력 오류");
+            return;
+          }
+          showInfo("register-status", "회원가입 완료. 로그인 해주세요.");
+        } catch (err) {
+          showError("register-status", "네트워크 오류가 발생했습니다.");
+        }
+      });
+    </script>
+  </body>
+</html>
